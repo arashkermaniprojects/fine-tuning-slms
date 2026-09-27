@@ -5,12 +5,12 @@
   {
    "target": "qwen3-omni-paper-01",
    "title": "The question",
-   "text": "This one is a reference paper, so treat it as background reading, not as one of your assigned articles. Qwen3-Omni asks a bold question. Can a single model read text, look at images and video, listen to audio, and talk back, without becoming worse at any one of these than a specialist of the same size? For your assignment it is useful as the finished picture of what you are building towards: a model that takes text, image and voice together."
+   "text": "This one is a larger reference model, so treat it as a source of ideas, not as a model you will train yourself. Qwen3-Omni asks a bold question. Can a single model read text, look at images and video, listen to audio, and talk back, without becoming worse at any one of these than a specialist of the same size? For a fine-tuning project it is useful as the finished picture of what you are building towards: a model that takes text, image and voice together."
   },
   {
    "target": "qwen3-omni-fig-01",
    "title": "Four inputs, one reader",
-   "text": "Here is the whole system in one diagram, and it is the diagram your Part A explanation should resemble. Follow each row. Text is split into tokens. Images and video frames go through a vision encoder. Voice is turned into a mel spectrogram and then into audio tokens. All of them land in one sequence, and a mixture-of-experts language model called the Thinker reads it. Notice the bottom row: a second model, the Talker, turns the Thinker's hidden states into speech."
+   "text": "Here is the whole system in one diagram, and it is the diagram your own explanation of the inputs should resemble. Follow each row. Text is split into tokens. Images and video frames go through a vision encoder. Voice is turned into a mel spectrogram and then into audio tokens. All of them land in one sequence, and a mixture-of-experts language model called the Thinker reads it. Notice the bottom row: a second model, the Talker, turns the Thinker's hidden states into speech."
   },
   {
    "target": "qwen3-omni-fig-02",
@@ -40,7 +40,7 @@
   {
    "target": "qwen3-omni-callout-01",
    "title": "What you take from it",
-   "text": "So what do you take into your assignment? Not the model itself. Every released version has thirty billion parameters, far too many for QLoRA on a free Colab T four. Take the ideas: keep the encoders frozen, put LoRA on the language model's attention, and try a task like spoken questions about an image. For fairness, note that the paper gives no per-language speech results, so an Arabic versus English gap is yours to measure. Next, MiniCPM-o 4.5 measures itself directly against Qwen3-Omni and aims for full-duplex interaction, listening and speaking at the same time."
+   "text": "So what do you take into your own project? Not the model itself. Every released version has thirty billion parameters, far too many for QLoRA on a free Colab T four. Take the ideas: keep the encoders frozen, put LoRA on the language model's attention, and try a task like spoken questions about an image. For fairness, note that the paper gives no per-language speech results, so an Arabic versus English gap is yours to measure. Next, MiniCPM-o 4.5 measures itself directly against Qwen3-Omni and aims for full-duplex interaction, listening and speaking at the same time."
   }
  ]
 }

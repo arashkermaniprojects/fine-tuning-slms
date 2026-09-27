@@ -5,7 +5,7 @@
   {
    "target": "gemma4-paper-01",
    "title": "The question",
-   "text": "We end the atlas with Gemma 4, from Google DeepMind. Its question is practical: can one family of open models read text, images and audio, reason well, and still run on a phone or a free GPU? The family spans a small model called E2B, with 2.3 billion effective parameters, up to a 31 billion dense model and a Mixture-of-Experts. For your assignment, the small end is what counts, so keep asking which size you can actually fine-tune."
+   "text": "We end the atlas with Gemma 4, from Google DeepMind. Its question is practical: can one family of open models read text, images and audio, reason well, and still run on a phone or a free GPU? The family spans a small model called E2B, with 2.3 billion effective parameters, up to a 31 billion dense model and a Mixture-of-Experts. For a fine-tuning project, the small end is what counts, so keep asking which size you can actually fine-tune."
   },
   {
    "target": "gemma4-fig-01",

@@ -7,7 +7,7 @@
   {
    "target": "gemma4-paper-01",
    "title": "The last paper",
-   "text": "Welcome to the last paper in our atlas, and maybe the most useful one for your assignment. Gemma 4 is a family of open models from Google DeepMind. The two smallest, E2B and E4B, read text, images and speech natively and fit on a free T4. Before you read, let's make sure you know how pictures and sound get into the model, and what the model names mean."
+   "text": "Welcome to the last paper in our atlas, and maybe the most useful one for a hands-on project. Gemma 4 is a family of open models from Google DeepMind. The two smallest, E2B and E4B, read text, images and speech natively and fit on a free T4. Before you read, let's make sure you know how pictures and sound get into the model, and what the model names mean."
   },
   {
    "target": "gemma4-ifig-01",
@@ -22,7 +22,7 @@
   {
    "target": "gemma4-gloss-01",
    "title": "Words to keep handy",
-   "text": "The glossary collects the rest. Keep an eye on WER, the word error rate, which is how the paper scores transcription and how you might score your own model in Part C. FLEURS and CoVoST are the speech benchmarks, and InfographicVQA tests questions about text heavy images. You will also meet the KV cache and thinking mode, which explain the paper's speed and reasoning tricks."
+   "text": "The glossary collects the rest. Keep an eye on WER, the word error rate, which is how the paper scores transcription and how you might score your own model after fine-tuning. FLEURS and CoVoST are the speech benchmarks, and InfographicVQA tests questions about text heavy images. You will also meet the KV cache and thinking mode, which explain the paper's speed and reasoning tricks."
   },
   {
    "target": "gemma4-ifig-04",

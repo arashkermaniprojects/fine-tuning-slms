@@ -7,7 +7,7 @@
   {
    "target": "voxtral-paper-01",
    "title": "A model that listens",
-   "text": "So far the atlas has covered text and images. Voxtral is our first model that listens. Mistral took a Whisper speech encoder and attached it to one of their language models, so you can hand it a recording and a question and get a written answer. For your assignment it is a strong candidate for the voice part. Before we read it, let me give you the three ideas the paper takes for granted."
+   "text": "So far the atlas has covered text and images. Voxtral is our first model that listens. Mistral took a Whisper speech encoder and attached it to one of their language models, so you can hand it a recording and a question and get a written answer. For a text, image and voice project it is a strong candidate for the voice part. Before we read it, let me give you the three ideas the paper takes for granted."
   },
   {
    "target": "voxtral-ifig-01",

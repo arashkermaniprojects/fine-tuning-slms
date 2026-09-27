@@ -7,7 +7,7 @@
   {
    "target": "minimind-o-paper-01",
    "title": "What this paper is",
-   "text": "Welcome to MiniMind-O. This is the smallest model in our atlas that does everything your assignment asks for: it listens to speech, looks at images, reads text, and answers in text and in its own voice. It has only about one tenth of a billion trainable parameters, and its code, weights and training data are all open. Before the full tour, let me give you four ideas you will need."
+   "text": "Welcome to MiniMind-O. This is the smallest model in our atlas that does everything a text, image and voice project needs: it listens to speech, looks at images, reads text, and answers in text and in its own voice. It has only about one tenth of a billion trainable parameters, and its code, weights and training data are all open. Before the full tour, let me give you four ideas you will need."
   },
   {
    "target": "minimind-o-ifig-01",

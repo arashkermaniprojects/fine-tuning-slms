@@ -5,7 +5,7 @@
   {
    "target": "qlora-paper-01",
    "title": "Welcome to the atlas",
-   "text": "This is the first of the eleven papers, and it is about the tool, not a model. QLoRA answers a practical question: can you fine-tune a large language model on a single GPU without losing quality? Its answer is yes, and it is the method you will use in Part B."
+   "text": "This is the first of the eleven papers, and it is about the tool, not a model. QLoRA answers a practical question: can you fine-tune a large language model on a single GPU without losing quality? Its answer is yes, and it is the method behind almost every project in this atlas."
   },
   {
    "target": "qlora-fig-01",
@@ -40,7 +40,7 @@
   {
    "target": "qlora-callout-01",
    "title": "What you take from it",
-   "text": "So what do you take into your assignment? QLoRA is a recipe, not a model, so pair it with a model that sees and hears, or add a speech to text model in a pipeline. Put LoRA on the language model's linear layers, keep the encoders frozen, use float sixteen compute on the T4, and check memory on a real batch. Next, TinyLLaVA Factory shows how a small vision encoder and a projector plug into a language model."
+   "text": "So what do you take into your own project? QLoRA is a recipe, not a model, so pair it with a model that sees and hears, or add a speech to text model in a pipeline. Put LoRA on the language model's linear layers, keep the encoders frozen, use float sixteen compute on the T4, and check memory on a real batch. Next, TinyLLaVA Factory shows how a small vision encoder and a projector plug into a language model."
   }
  ]
 }

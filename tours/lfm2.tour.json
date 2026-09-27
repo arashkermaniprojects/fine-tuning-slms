@@ -5,7 +5,7 @@
   {
    "target": "lfm2-paper-01",
    "title": "The question",
-   "text": "Welcome to LFM2, from Liquid AI. So far in this atlas we have looked at fine-tuning, small vision models and speech models. LFM2 asks a practical question: how do you build a language model small enough to run on a phone, and still make it useful? Their answer covers a whole family, including a vision model and an audio model built on the same backbone. As we go, think about which of these models you would pick for your own assignment."
+   "text": "Welcome to LFM2, from Liquid AI. So far in this atlas we have looked at fine-tuning, small vision models and speech models. LFM2 asks a practical question: how do you build a language model small enough to run on a phone, and still make it useful? Their answer covers a whole family, including a vision model and an audio model built on the same backbone. As we go, think about which of these models you would pick for your own project."
   },
   {
    "target": "lfm2-fig-01",
@@ -45,7 +45,7 @@
   {
    "target": "lfm2-callout-01",
    "title": "What you take from it",
-   "text": "So what do you take into Assignment 1? LFM2-VL handles text and images, LFM2-Audio handles text and speech, so plan a speech-to-text step before the vision model. Start small: the four hundred and fifty million or 1.6 billion vision model fits a free T4 with QLoRA. Put LoRA on the backbone's linear layers, and compare Arabic and English inputs for fairness. Next, MiniMind-O goes the other way: one tiny model that takes all three inputs at once."
+   "text": "So what do you take into a text, image and voice project? LFM2-VL handles text and images, LFM2-Audio handles text and speech, so plan a speech-to-text step before the vision model. Start small: the four hundred and fifty million or 1.6 billion vision model fits a free T4 with QLoRA. Put LoRA on the backbone's linear layers, and compare Arabic and English inputs for fairness. Next, MiniMind-O goes the other way: one tiny model that takes all three inputs at once."
   }
  ]
 }

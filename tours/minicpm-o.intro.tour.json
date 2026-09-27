@@ -12,7 +12,7 @@
   {
    "target": "minicpm-o-ifig-01",
    "title": "Everything becomes tokens",
-   "text": "First, tokens. A language model only reads a row of vectors. An image slice goes through a vision transformer called SigLIP and a resampler, ending as sixty four tokens. Sound is first drawn as a log-mel spectrogram, then the Whisper encoder and a small network turn it into ten tokens per second. Explaining these paths is exactly your job in Part A."
+   "text": "First, tokens. A language model only reads a row of vectors. An image slice goes through a vision transformer called SigLIP and a resampler, ending as sixty four tokens. Sound is first drawn as a log-mel spectrogram, then the Whisper encoder and a small network turn it into ten tokens per second. Explaining these paths is the first thing to get clear."
   },
   {
    "target": "minicpm-o-ifig-02",
@@ -27,7 +27,7 @@
   {
    "target": "minicpm-o-ifig-04",
    "title": "Where this paper sits",
-   "text": "Finally, the map. MiniCPM-o follows Qwen3-Omni, a large mixture of experts model, and comes just before Gemma 4, which answers only in text. What it adds is full-duplex interaction in a single dense model. Text, images and voice are all native, so no extra speech to text model is needed. For Part B, you would put LoRA on the Qwen3 layers and keep the encoders frozen. When you're ready, press Play guided tour."
+   "text": "Finally, the map. MiniCPM-o follows Qwen3-Omni, a large mixture of experts model, and comes just before Gemma 4, which answers only in text. What it adds is full-duplex interaction in a single dense model. Text, images and voice are all native, so no extra speech to text model is needed. To fine-tune it, you would put LoRA on the Qwen3 layers and keep the encoders frozen. When you're ready, press Play guided tour."
   }
  ]
 }

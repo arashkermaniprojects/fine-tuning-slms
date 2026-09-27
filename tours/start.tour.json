@@ -6,12 +6,12 @@
   {
    "target": "start-paper-01",
    "title": "Welcome to the atlas",
-   "text": "Welcome to the atlas for MAI 656 and Assignment 1. In this assignment you take a small open model, teach it a task that uses text, images and voice, and then measure honestly what changed. The eleven papers in this atlas describe the models you can start from and the fine-tuning method you will use. Before you open them, this introduction gives you the ideas they all take for granted. It takes about seven minutes, and nothing here assumes you have done this before."
+   "text": "Welcome to the atlas. In a typical fine-tuning project you take a small open model, teach it a task that uses text, images and voice, and then measure honestly what changed. The eleven papers in this atlas describe the models you can start from and the fine-tuning method that makes it affordable. Before you open them, this introduction gives you the ideas they all take for granted. It takes about seven minutes, and nothing here assumes you have done this before."
   },
   {
    "target": "start-fig-01",
-   "title": "The assignment in one picture",
-   "text": "Here is the whole assignment in one drawing. Text, an image and a spoken question go in, and a text answer comes out. On the left, one model has its own eyes and ears, so all three inputs enter the same network. On the right, the model cannot hear, so a small speech-to-text model such as Whisper writes down the question first. Both routes are allowed. Either way, you train only the small part marked in rust, the LoRA adapters, and you score the text answer."
+   "title": "A project in one picture",
+   "text": "Here is a whole fine-tuning project in one drawing. Text, an image and a spoken question go in, and a text answer comes out. On the left, one model has its own eyes and ears, so all three inputs enter the same network. On the right, the model cannot hear, so a small speech-to-text model such as Whisper writes down the question first. Both routes work well. Either way, you train only the small part marked in rust, the LoRA adapters, and you score the text answer."
   },
   {
    "target": "start-fig-04",
@@ -31,7 +31,7 @@
   {
    "target": "start-fig-12",
    "title": "Omni models",
-   "text": "Put all of this together and you get an omni model. Every encoder feeds one language model, called the Thinker, which reads text, images, audio and even video, and writes the answer. A second part, the Talker, turns the Thinker's hidden states into speech. Qwen2.5-Omni, Qwen3-Omni and MiniMind-O are built this way. For your assignment you usually need only the text answer, so you can leave the Talker frozen or not load it at all. If your model has no ears, use a pipeline instead."
+   "text": "Put all of this together and you get an omni model. Every encoder feeds one language model, called the Thinker, which reads text, images, audio and even video, and writes the answer. A second part, the Talker, turns the Thinker's hidden states into speech. Qwen2.5-Omni, Qwen3-Omni and MiniMind-O are built this way. For most fine-tuning tasks you need only the text answer, so you can leave the Talker frozen or not load it at all. If your model has no ears, use a pipeline instead."
   },
   {
    "target": "start-fig-14",
@@ -46,7 +46,7 @@
   {
    "target": "start-fig-18",
    "title": "Data and metrics",
-   "text": "Part C is about measuring honestly. Split your data first, at least three hundred training and fifty test examples, and never let the same photo or speaker appear on both sides. Then compare the base model and your fine-tuned model on the same test set with the same metric. For transcripts that metric is often word error rate. Here the model makes one substitution, one deletion and one insertion against six reference words, so the error rate is fifty percent. Try one of these by hand."
+   "text": "Now, measuring honestly. Split your data first, a few hundred training examples and a held-out test set, and never let the same photo or speaker appear on both sides. Then compare the base model and your fine-tuned model on the same test set with the same metric. For transcripts that metric is often word error rate. Here the model makes one substitution, one deletion and one insertion against six reference words, so the error rate is fifty percent. Try one of these by hand."
   },
   {
    "target": "start-fig-20",
@@ -56,12 +56,12 @@
   {
    "target": "start-fig-22",
    "title": "The map of the papers",
-   "text": "Here is the map of all eleven papers. Each row shows which inputs a model accepts natively, the smallest size the paper reports, whether it plausibly fits a free T4, and which student folder it belongs to. The vision language models need a speech-to-text stage, the speech models need an image stage, and the omni models take everything. Qwen3-Omni is reference reading only, because it is far too big for a T4. Find your own folder in the last column and start with those papers."
+   "text": "Here is the map of all eleven papers. Each row shows which inputs a model accepts natively, the smallest size the paper reports, whether it plausibly fits a free T4, and the year it appeared. The vision language models need a speech-to-text stage, the speech models need an image stage, and the omni models take everything. Qwen3-Omni is here as a larger reference model, because it is far too big for a T4. Find the row that matches your task and start with that paper."
   },
   {
    "target": "start-steps-01",
    "title": "How to use the atlas",
-   "text": "Finally, how to use the atlas. Every paper tab has a Play intro button for a short introduction, then a guided tour like this one that walks through the key diagrams. Under every figure, equation and table there is a small Guide note, and at the end of each tab a box called For your assignment turns the paper into practical advice. The glossary below is there whenever a word is unfamiliar. Next, open QLoRA, the fine-tuning tool you will use, and press Play intro."
+   "text": "Finally, how to use the atlas. Every paper tab has a Play intro button for a short introduction, then a guided tour like this one that walks through the key diagrams. Under every figure, equation and table there is a small Guide note, and at the end of each tab a box called Putting it into practice turns the paper into practical advice. The glossary below is there whenever a word is unfamiliar. Next, open QLoRA, the fine-tuning method behind it all, and press Play intro."
   }
  ]
 }

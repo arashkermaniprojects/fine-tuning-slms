@@ -5,12 +5,12 @@
   {
    "target": "minimind-o-paper-01",
    "title": "The question",
-   "text": "Welcome to the omni group, where one model reads, sees, hears and talks back. We start with the smallest one in the atlas. MiniMind-O asks a simple question: can a complete omni model work, and stay fully open, with only about one tenth of a billion active parameters? For you this matters directly. A model this small is one you can actually fine-tune on a free Colab GPU, and it already accepts all three inputs your assignment asks for."
+   "text": "Welcome to the omni group, where one model reads, sees, hears and talks back. We start with the smallest one in the atlas. MiniMind-O asks a simple question: can a complete omni model work, and stay fully open, with only about one tenth of a billion active parameters? For you this matters directly. A model this small is one you can actually fine-tune on a free Colab GPU, and it already accepts text, images and voice, all three inputs at once."
   },
   {
    "target": "minimind-o-fig-01",
    "title": "Three inputs, two outputs",
-   "text": "Here is the whole model on one page, and it is exactly what Part A asks you to explain. Read each row from left to right. Text goes straight into the language model's own embeddings. Speech goes through a frozen SenseVoice encoder, images through a frozen SigLIP2 encoder, and a tiny two-layer projector maps both into the same space. The language model, called the Thinker, writes text. A separate Talker turns a middle layer into speech. Notice that video is crossed out."
+   "text": "Here is the whole model on one page, and it shows exactly which inputs the model takes. Read each row from left to right. Text goes straight into the language model's own embeddings. Speech goes through a frozen SenseVoice encoder, images through a frozen SigLIP2 encoder, and a tiny two-layer projector maps both into the same space. The language model, called the Thinker, writes text. A separate Talker turns a middle layer into speech. Notice that video is crossed out."
   },
   {
    "target": "minimind-o-fig-03",
@@ -20,7 +20,7 @@
   {
    "target": "minimind-o-fig-05",
    "title": "How speech and images get in",
-   "text": "Now, how do sound and pictures enter a text model? Through placeholders. The prompt reserves one audio slot per speech frame and sixty-four slots per image. After projection, the encoder outputs simply overwrite those slots, so the Thinker sees one ordinary sequence with no new attention layers. This is the sentence you want in your Part A answer. It also means a spoken question about a photo is just one more sequence, which is the format you need for your own task."
+   "text": "Now, how do sound and pictures enter a text model? Through placeholders. The prompt reserves one audio slot per speech frame and sixty-four slots per image. After projection, the encoder outputs simply overwrite those slots, so the Thinker sees one ordinary sequence with no new attention layers. This is the one sentence to remember about input. It also means a spoken question about a photo is just one more sequence, which is the format you need for your own task."
   },
   {
    "target": "minimind-o-fig-08",
@@ -40,7 +40,7 @@
   {
    "target": "minimind-o-callout-01",
    "title": "What you take from it",
-   "text": "So what do you take into your assignment? You need no extra speech model, because voice, image and text are all native. The dense version should fit a free T4. Put LoRA on the Thinker's attention and feed-forward layers, train the small projectors, and keep the encoders frozen. For fairness, compare English with Chinese speakers, since the speech data is mostly Chinese. For normalization, write numbers one way before scoring. Next, Qwen2.5-Omni shows the same Thinker and Talker design at full scale."
+   "text": "So what do you take into your own fine-tuning project? You need no extra speech model, because voice, image and text are all native. The dense version should fit a free T4. Put LoRA on the Thinker's attention and feed-forward layers, train the small projectors, and keep the encoders frozen. For fairness, compare English with Chinese speakers, since the speech data is mostly Chinese. For normalization, write numbers one way before scoring. Next, Qwen2.5-Omni shows the same Thinker and Talker design at full scale."
   }
  ]
 }

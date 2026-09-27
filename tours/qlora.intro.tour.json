@@ -7,7 +7,7 @@
   {
    "target": "qlora-paper-01",
    "title": "Why start here",
-   "text": "Before we read QLoRA together, let me give you the three ideas it takes for granted. This paper is the tool you will use in Part B of Assignment 1. It shows how to fine-tune a large language model on a single GPU, and the same trick lets you fine-tune a small model on a free Colab or Kaggle GPU. Two minutes now will make the rest of the tab much easier."
+   "text": "Before we read QLoRA together, let me give you the three ideas it takes for granted. This paper is the tool at the heart of almost every fine-tuning project. It shows how to fine-tune a large language model on a single GPU, and the same trick lets you fine-tune a small model on a free Colab or Kaggle GPU. Two minutes now will make the rest of the tab much easier."
   },
   {
    "target": "qlora-ifig-01",

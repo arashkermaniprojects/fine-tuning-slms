@@ -5,7 +5,7 @@
   {
    "target": "voxtral-realtime-paper-01",
    "title": "The question",
-   "text": "Welcome to the second paper in the hearing group. Voxtral showed how a language model can listen. Voxtral Realtime asks a harder question: can it write down what you say while you are still saying it, and stay as accurate as a model that waits for the whole recording? The answer is a 4.4 billion parameter model that transcribes 13 languages with less than half a second of delay. For your Part A, keep one fact in mind from the start: this model hears speech and writes text, nothing more."
+   "text": "Welcome to the second paper in the hearing group. Voxtral showed how a language model can listen. Voxtral Realtime asks a harder question: can it write down what you say while you are still saying it, and stay as accurate as a model that waits for the whole recording? The answer is a 4.4 billion parameter model that transcribes 13 languages with less than half a second of delay. If you are choosing models, keep one fact in mind from the start: this model hears speech and writes text, nothing more."
   },
   {
    "target": "voxtral-realtime-fig-01",
@@ -20,7 +20,7 @@
   {
    "target": "voxtral-realtime-fig-04",
    "title": "From sound to tokens",
-   "text": "This is the audio half of your Part A answer. Sixteen thousand samples a second become 100 Mel frames, a strided convolution halves that to 50, and the adapter stacks four encoder frames into one decoder step. So the language model takes exactly one step every 80 milliseconds. Every layer in the encoder is causal, meaning it never looks ahead, and sliding windows keep memory bounded, so the stream can run for as long as you like."
+   "text": "This is the audio half of the story, how sound enters the model. Sixteen thousand samples a second become 100 Mel frames, a strided convolution halves that to 50, and the adapter stacks four encoder frames into one decoder step. So the language model takes exactly one step every 80 milliseconds. Every layer in the encoder is causal, meaning it never looks ahead, and sliding windows keep memory bounded, so the stream can run for as long as you like."
   },
   {
    "target": "voxtral-realtime-fig-05",
@@ -40,12 +40,12 @@
   {
    "target": "voxtral-realtime-fig-15",
    "title": "Not equal for everyone",
-   "text": "Before you celebrate, look at this chart. Average numbers hide big gaps between languages. At half a second of delay, English has about five percent error, while Arabic has twenty two and a half. On crowd recorded Common Voice, every model in the paper is above forty five percent on Arabic, so the authors drop Arabic from the averages. For you, this is a gift: a ready made fairness experiment for Part C."
+   "text": "Before you celebrate, look at this chart. Average numbers hide big gaps between languages. At half a second of delay, English has about five percent error, while Arabic has twenty two and a half. On crowd recorded Common Voice, every model in the paper is above forty five percent on Arabic, so the authors drop Arabic from the averages. For you, this is a gift: a ready made fairness experiment for your evaluation."
   },
   {
    "target": "voxtral-realtime-callout-01",
    "title": "What you take from it",
-   "text": "So how do you use this in Assignment 1? Treat Voxtral Realtime as the ears of a pipeline. Transcribe the spoken question, then pass the transcript and the image to a small vision language model that you fine-tune with QLoRA. Pick a long delay, since your task is not live. Check memory and library support before you try to fine-tune the 4.4 billion parameter model itself. Next, LFM2 shows a different design, a compact hybrid model built for speed on small devices."
+   "text": "So how do you use this in a text, image and voice project? Treat Voxtral Realtime as the ears of a pipeline. Transcribe the spoken question, then pass the transcript and the image to a small vision language model that you fine-tune with QLoRA. Pick a long delay, since your task is not live. Check memory and library support before you try to fine-tune the 4.4 billion parameter model itself. Next, LFM2 shows a different design, a compact hybrid model built for speed on small devices."
   }
  ]
 }

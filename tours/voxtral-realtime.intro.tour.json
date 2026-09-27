@@ -22,12 +22,12 @@
   {
    "target": "voxtral-realtime-ifig-03",
    "title": "How transcripts are scored",
-   "text": "The third idea is the score. Word error rate counts substitutions, deletions and insertions, divided by the number of words in the reference. Lower is better. You will compute it yourself in Part C, so notice one trap: capital letters and punctuation count as errors unless you normalize both texts. The glossary below also explains FLEURS and Common Voice, the two test sets, and Whisper, the offline baseline."
+   "text": "The third idea is the score. Word error rate counts substitutions, deletions and insertions, divided by the number of words in the reference. Lower is better. You will likely compute it yourself when you evaluate, so notice one trap: capital letters and punctuation count as errors unless you normalize both texts. The glossary below also explains FLEURS and Common Voice, the two test sets, and Whisper, the offline baseline."
   },
   {
    "target": "voxtral-realtime-ifig-04",
    "title": "Where this paper sits",
-   "text": "Finally, the map. This is paper five of eleven. It takes voice in and gives text out, nothing else, so for Assignment 1 you would use it as the speech to text stage in front of a vision language model. Its gap between Arabic and English is also a ready made fairness test. Next comes LFM2, a fast backbone with image and audio variants. When you're ready, press Play guided tour."
+   "text": "Finally, the map. This is paper five of eleven. It takes voice in and gives text out, nothing else, so for a text, image and voice task you would use it as the speech to text stage in front of a vision language model. Its gap between Arabic and English is also a ready made fairness test. Next comes LFM2, a fast backbone with image and audio variants. When you're ready, press Play guided tour."
   }
  ]
 }
