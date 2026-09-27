@@ -27,7 +27,7 @@
   {
    "target": "voxtral-ifig-04",
    "title": "Where Voxtral sits",
-   "text": "Finally, where this paper sits. Before it, SmolVLM taught a small model to see. Voxtral teaches one to hear, with speech and text in and text out. It cannot see images, so for a task with all three inputs, pair it with a small vision model. Next comes Voxtral Realtime, which transcribes while you are still speaking. When you're ready, press Play guided tour."
+   "text": "Finally, where this paper sits. Before it, SmolVLM taught a small model to see. Voxtral teaches one to hear, with speech and text in and text out. It cannot see images, so for a task with all three inputs, pair it with a small vision model. Next comes Voxtral Realtime, which transcribes while you are still speaking. Next comes the guided tour."
   }
  ]
 }

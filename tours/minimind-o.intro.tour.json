@@ -27,7 +27,7 @@
   {
    "target": "minimind-o-ifig-04",
    "title": "Where it sits",
-   "text": "Finally, where this paper sits. After LFM2, which kept vision and audio in separate models, MiniMind-O puts hearing, seeing and speaking into one tiny open model you can read line by line. Next, Qwen2.5-Omni scales the same Thinker and Talker idea to seven billion parameters and adds video. One warning for your fairness experiment: this model's English is weaker than its Chinese. When you're ready, press Play guided tour."
+   "text": "Finally, where this paper sits. After LFM2, which kept vision and audio in separate models, MiniMind-O puts hearing, seeing and speaking into one tiny open model you can read line by line. Next, Qwen2.5-Omni scales the same Thinker and Talker idea to seven billion parameters and adds video. One warning for your fairness experiment: this model's English is weaker than its Chinese. Next comes the guided tour."
   }
  ]
 }

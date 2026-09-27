@@ -27,7 +27,7 @@
   {
    "target": "voxtral-realtime-ifig-04",
    "title": "Where this paper sits",
-   "text": "Finally, the map. This is paper five of eleven. It takes voice in and gives text out, nothing else, so for a text, image and voice task you would use it as the speech to text stage in front of a vision language model. Its gap between Arabic and English is also a ready made fairness test. Next comes LFM2, a fast backbone with image and audio variants. When you're ready, press Play guided tour."
+   "text": "Finally, the map. This is paper five of eleven. It takes voice in and gives text out, nothing else, so for a text, image and voice task you would use it as the speech to text stage in front of a vision language model. Its gap between Arabic and English is also a ready made fairness test. Next comes LFM2, a fast backbone with image and audio variants. Next comes the guided tour."
   }
  ]
 }

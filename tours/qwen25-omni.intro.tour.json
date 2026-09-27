@@ -1,7 +1,33 @@
-{"paper":"qwen25-omni","kind":"intro","button":"Play intro","title":"Before you read Qwen2.5-Omni","stops":[
-{"target":"qwen25-omni-paper-01","title":"Why this paper","text":"Welcome to Qwen2.5-Omni. This is the paper where text, images and voice all go into one open model natively, which is exactly what a text, image and voice project needs. Before the guided tour, let's build three ideas: how pictures and sound become tokens, how a model can speak back, and what a position ID is. With those, the rest of the tab will read easily."},
-{"target":"qwen25-omni-ifig-01","title":"Everything becomes tokens","text":"First, the input side. An image is cut into small patches, a vision transformer turns them into vectors, and neighbouring vectors are merged into visual tokens. A voice clip becomes a log-mel spectrogram, a picture of sound, and a Whisper based encoder makes about twenty five tokens per second. Text is tokenized as usual. The Thinker, the language model, simply reads one long mixed sequence."},
-{"target":"qwen25-omni-ifig-02","title":"How the model speaks","text":"Second, the output side. The model does not write a waveform directly. A second decoder called the Talker predicts speech codec tokens, and two small networks turn those codes into sound. Doing this chunk by chunk is called streaming, and it cuts latency, the wait before the reply starts. For your fine-tuning you can ignore the Talker and train only text answers."},
-{"target":"qwen25-omni-gloss-01","title":"Words to know","text":"Third, the glossary. Say these aloud with me: Thinker and Talker, the two halves of the model. TMRoPE, the position scheme that gives every token a time stamp in forty millisecond steps, so a video frame and its sound line up. And word error rate, or WER, which you will likely use to score voice results."},
-{"target":"qwen25-omni-ifig-04","title":"Where it sits","text":"Finally, where this paper sits. It is number eight of eleven. MiniMind-O, just before, showed a tiny omni model you can read end to end. Qwen2.5-Omni is the full size version, with streaming speech out. Qwen3-Omni, next, is a larger model that keeps the same design. When you're ready, press Play guided tour."}
-]}
+{
+ "paper": "qwen25-omni",
+ "kind": "intro",
+ "button": "Play intro",
+ "title": "Before you read Qwen2.5-Omni",
+ "stops": [
+  {
+   "target": "qwen25-omni-paper-01",
+   "title": "Why this paper",
+   "text": "Welcome to Qwen2.5-Omni. This is the paper where text, images and voice all go into one open model natively, which is exactly what a text, image and voice project needs. Before the guided tour, let's build three ideas: how pictures and sound become tokens, how a model can speak back, and what a position ID is. With those, the rest of the tab will read easily."
+  },
+  {
+   "target": "qwen25-omni-ifig-01",
+   "title": "Everything becomes tokens",
+   "text": "First, the input side. An image is cut into small patches, a vision transformer turns them into vectors, and neighbouring vectors are merged into visual tokens. A voice clip becomes a log-mel spectrogram, a picture of sound, and a Whisper based encoder makes about twenty five tokens per second. Text is tokenized as usual. The Thinker, the language model, simply reads one long mixed sequence."
+  },
+  {
+   "target": "qwen25-omni-ifig-02",
+   "title": "How the model speaks",
+   "text": "Second, the output side. The model does not write a waveform directly. A second decoder called the Talker predicts speech codec tokens, and two small networks turn those codes into sound. Doing this chunk by chunk is called streaming, and it cuts latency, the wait before the reply starts. For your fine-tuning you can ignore the Talker and train only text answers."
+  },
+  {
+   "target": "qwen25-omni-gloss-01",
+   "title": "Words to know",
+   "text": "Third, the glossary. Say these aloud with me: Thinker and Talker, the two halves of the model. TMRoPE, the position scheme that gives every token a time stamp in forty millisecond steps, so a video frame and its sound line up. And word error rate, or WER, which you will likely use to score voice results."
+  },
+  {
+   "target": "qwen25-omni-ifig-04",
+   "title": "Where it sits",
+   "text": "Finally, where this paper sits. It is number eight of eleven. MiniMind-O, just before, showed a tiny omni model you can read end to end. Qwen2.5-Omni is the full size version, with streaming speech out. Qwen3-Omni, next, is a larger model that keeps the same design. Next comes the guided tour."
+  }
+ ]
+}

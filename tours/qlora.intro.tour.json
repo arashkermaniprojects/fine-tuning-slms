@@ -27,7 +27,7 @@
   {
    "target": "qlora-ifig-04",
    "title": "Where this paper sits",
-   "text": "Finally, where this paper sits. QLoRA is the first of eleven papers, and it handles text only. It gives you the fine-tuning recipe, but not a model that sees or hears. The next tab, TinyLLaVA Factory, adds images to a small language model, and later tabs add voice. Your job is to bring the two together. When you're ready, press Play guided tour."
+   "text": "Finally, where this paper sits. QLoRA is the first of eleven papers, and it handles text only. It gives you the fine-tuning recipe, but not a model that sees or hears. The next tab, TinyLLaVA Factory, adds images to a small language model, and later tabs add voice. Your job is to bring the two together. Next comes the guided tour."
   }
  ]
 }

@@ -6,62 +6,132 @@
   {
    "target": "start-paper-01",
    "title": "Welcome to the atlas",
-   "text": "Welcome to the atlas. In a typical fine-tuning project you take a small open model, teach it a task that uses text, images and voice, and then measure honestly what changed. The eleven papers in this atlas describe the models you can start from and the fine-tuning method that makes it affordable. Before you open them, this introduction gives you the ideas they all take for granted. It takes about seven minutes, and nothing here assumes you have done this before."
+   "text": "Welcome to the atlas. In a typical fine-tuning project you take a small open model, teach it a task that uses text, images and voice, and measure honestly what changed. The eleven papers here describe the models you can start from and the method that makes it affordable. Each tab has a spoken intro, a guided tour of its key diagrams, and a written guide under each block. Auto-continue plays everything in order. Let's begin with a visual primer."
   },
   {
    "target": "start-fig-01",
    "title": "A project in one picture",
-   "text": "Here is a whole fine-tuning project in one drawing. Text, an image and a spoken question go in, and a text answer comes out. On the left, one model has its own eyes and ears, so all three inputs enter the same network. On the right, the model cannot hear, so a small speech-to-text model such as Whisper writes down the question first. Both routes work well. Either way, you train only the small part marked in rust, the LoRA adapters, and you score the text answer."
+   "text": "Here is a whole fine-tuning project in one drawing. Text, an image and a spoken question go in, and a text answer comes out. On the left, one model has its own eyes and ears, so all three inputs enter the same network. On the right, the model cannot hear, so a small speech-to-text model writes down the question first. Both routes work. Either way, you train only the small part marked in rust, the LoRA adapters."
+  },
+  {
+   "target": "start-fig-02",
+   "title": "Four steps, one flow",
+   "text": "Next to it, the same project as four steps: plan, fine-tune, evaluate, document. First understand how your model takes in text, images and voice. Then build your data and run the training. Then compare the base and fine-tuned models, and finally write it up with a short model card. The row underneath is a rough effort budget. Training is the biggest single share, about four of fifteen, but most of the work lives around it."
+  },
+  {
+   "target": "start-fig-03",
+   "title": "From text to tokens",
+   "text": "Now to the very first idea: how a model reads. A tokenizer cuts your sentence into sub-word pieces, often with the leading space attached. Each piece has a number in a fixed vocabulary, and an embedding table turns each number into a vector. Every model family has its own tokenizer, so always use the one shipped with your checkpoint. Once text is vectors, the model can start predicting."
   },
   {
    "target": "start-fig-04",
-   "title": "Tokens and next-token prediction",
-   "text": "Let's start with how a language model reads. Text is cut into tokens, small word pieces, and each token becomes a vector of numbers. The model then does one thing only: it predicts the next token, picks one, appends it and repeats. On the right is the chat template, the format with system, user and assistant turns that instruction-tuned models were trained on. Your fine-tuning data must use this template, and the loss is computed on the assistant's answer, not on your question."
+   "title": "Next-token prediction",
+   "text": "And predicting is all a language model does. Given the context, it gives a probability to every token in the vocabulary, picks one, appends it and repeats. On the right is the chat template, the format with system, user and assistant turns that instruction-tuned models were trained on. Your fine-tuning data must use the same template, and the loss is usually computed on the assistant's answer only, not on your question."
+  },
+  {
+   "target": "start-fig-05",
+   "title": "How attention works",
+   "text": "Now, what happens inside. The key mechanism is attention. Here the word it compares its query with every other token's key and pulls in most information from cat. The equation just below says the same thing: scores are queries times keys, scaled and turned into weights, then used to mix the values. Because every token looks at every other token, cost grows with the square of the sequence length. Image and audio tokens join the same attention."
+  },
+  {
+   "target": "start-fig-06",
+   "title": "A stack of layers",
+   "text": "Attention sits inside a layer, and a language model is simply a stack of identical layers. Each one has an attention block and a feed-forward block, both built from plain matrix multiplications. When a model is called two billion parameters, it means about two billion numbers inside those matrices. Keep this picture in mind, because these linear layers are exactly where the LoRA adapters will go later on."
+  },
+  {
+   "target": "start-fig-07",
+   "title": "What fills the context",
+   "text": "This chart shows why images and audio are expensive. A typed question is about fifteen tokens. Thirty seconds of speech is three hundred to seven hundred and fifty, depending on the model, and one tiled image can reach about two thousand eight hundred. The context length is how many tokens the model sees at once, and training memory grows with that length. So long sequences, not just big models, are what fill your GPU."
+  },
+  {
+   "target": "start-tbl-01",
+   "title": "Bytes per parameter",
+   "text": "Now to hardware. The equation above the table gives the rule: weight memory is roughly the number of parameters times the bytes per parameter. The table fills it in. At thirty-two bits, a two billion model needs eight gigabytes just for weights. At sixteen bits it needs four. In four-bit NormalFloat, the format QLoRA uses, it needs about one. Remember that training adds gradients, optimizer states and activations on top of these numbers."
   },
   {
    "target": "start-fig-08",
    "title": "How a model sees",
-   "text": "Now, how does a model see? The image is cut into small square patches, sixteen pixels wide in this example, so one picture gives about a thousand patches. A frozen vision encoder, such as SigLIP or CLIP, turns them into features. A compression step reduces their number, and a small trainable projector translates them into tokens the language model understands. From then on, the picture is just more tokens sitting next to your words. Notice the colours: teal is vision, indigo is language, and rust is what you train."
+   "text": "Now, how does a model see? The image is cut into square patches, sixteen pixels wide here, so one picture gives about a thousand patches. A frozen vision encoder such as SigLIP turns them into features. A compression step reduces their number, and a small projector maps them into the language model's embedding space. From then on, the picture is just more tokens beside your words. Teal is vision, indigo is language, rust is what you train."
+  },
+  {
+   "target": "start-fig-09",
+   "title": "Tiling and pixel shuffle",
+   "text": "Two knobs decide how many tokens an image costs. Tiling cuts a large image into tiles plus a small overview, so fine detail survives, but it multiplies the tokens. Pixel shuffle folds each small block of neighbouring features into one wider token, dividing the count. On a sixteen gigabyte GPU, lowering the image size or the number of tiles is often your easiest memory saving, though document tasks may suffer."
   },
   {
    "target": "start-fig-10",
    "title": "How a model hears",
-   "text": "Hearing works in the same way. The sound wave becomes a log-mel spectrogram, which is simply a picture of sound energy across frequencies over time. A Whisper-style audio encoder turns that into frames, and a small adapter packs four frames into one token. In Voxtral that gives twelve and a half audio tokens per second, so a thirty second question costs three hundred and seventy five tokens. Remember that number: audio and images fill memory much faster than text, and memory is your main limit."
+   "text": "Now to sound. Hearing works the same way as seeing: an encoder, then a small bridge. The waveform becomes a log-mel spectrogram, a picture of sound energy across frequencies over time. A Whisper-style encoder turns it into frames, and an adapter stacks neighbouring frames to cut the rate. In Voxtral that goes from one hundred frames per second down to twelve and a half tokens per second, which is why thirty seconds costs three hundred and seventy-five tokens."
+  },
+  {
+   "target": "start-fig-11",
+   "title": "Hearing, speaking, timing",
+   "text": "This figure adds three choices. At the top, a cascade transcribes speech first, while a native model hears the audio tokens directly, keeping tone and accent. Bottom left, to speak back, a separate Talker predicts codec tokens that a decoder turns into sound. Bottom right, a streaming model writes while you are still talking, a fixed delay behind, while an offline model waits for the whole clip. Most fine-tuning tasks are offline, so either is fine."
   },
   {
    "target": "start-fig-12",
    "title": "Omni models",
-   "text": "Put all of this together and you get an omni model. Every encoder feeds one language model, called the Thinker, which reads text, images, audio and even video, and writes the answer. A second part, the Talker, turns the Thinker's hidden states into speech. Qwen2.5-Omni, Qwen3-Omni and MiniMind-O are built this way. For most fine-tuning tasks you need only the text answer, so you can leave the Talker frozen or not load it at all. If your model has no ears, use a pipeline instead."
+   "text": "Put all of this together and you get an omni model. Frozen encoders and small projectors feed one language model, called the Thinker, which reads text, images, audio and even video, and writes the answer. The Talker reads the Thinker's hidden states and produces speech. For a task with a text answer, you can leave the Talker frozen or not load it at all, which saves a lot of memory."
+  },
+  {
+   "target": "start-fig-13",
+   "title": "Native or pipeline",
+   "text": "So which route should you take? This decision chart asks one question first: does your model accept voice? If yes, use its native audio input. If no, put a speech-to-text model such as Whisper in front of a vision-language model. Both are valid. Then check whether it fits sixteen gigabytes with QLoRA. A cascade is also a useful baseline to compare against a native model, since it tests each piece on its own."
   },
   {
    "target": "start-fig-14",
    "title": "LoRA and QLoRA",
-   "text": "So how do you fine-tune a model with billions of weights on a free GPU? Full fine-tuning updates every weight and needs huge memory. LoRA freezes the model and adds two thin matrices beside each weight matrix, and only those are trained. In this example that is about sixty five thousand numbers instead of four million. QLoRA goes one step further and stores the frozen model in four bits. In a multimodal model you keep the encoders frozen and put the adapters on the language model."
+   "text": "Now to fine-tuning without a big GPU. Full fine-tuning updates every weight and needs huge memory. LoRA freezes the weight and adds a thin detour of two small matrices beside it, and only those are trained. The equation below writes this as the frozen weight plus a scaled low-rank product. In this example that is about sixty-five thousand numbers instead of four million. QLoRA keeps the same adapters but stores the frozen weight in four bits."
+  },
+  {
+   "target": "start-fig-15",
+   "title": "Freeze the senses",
+   "text": "Where do the adapters go in a multimodal model? The short rule is: freeze the senses, adapt the brain. The vision and audio encoders stay frozen. LoRA goes on the language model's attention and feed-forward projections, the small projector is trained fully or given its own LoRA, and the Talker is left alone. These are recommendations rather than results every paper tested, so state which choice you made."
   },
   {
    "target": "start-fig-16",
    "title": "Will it fit the GPU?",
-   "text": "Now the reality check. The free Colab T4 has sixteen gigabytes, and it has no fast bf16, so you train in fp16. The top bar comes from the QLoRA paper: a seven billion model in four bits trained in about seven gigabytes. The middle bar is a rough estimate for a two billion vision language model, where image and audio activations take most of the space. The bottom bar, full fine-tuning, would need over a hundred gigabytes. If you run out of memory, shorten the inputs first."
+   "text": "Now the reality check. A free Colab or Kaggle T four has sixteen gigabytes and no fast bfloat sixteen, so you train in float sixteen. The top bar comes from the QLoRA paper: a seven billion model in four bits trained in about seven gigabytes. The middle bar, a rough estimate for a two billion vision-language model, is dominated by activations. Full fine-tuning, at the bottom, needs over a hundred gigabytes. Out of memory? Shorten the inputs first."
+  },
+  {
+   "target": "start-fig-17",
+   "title": "The test set is sacred",
+   "text": "Now to measuring honestly. Split your data before you train, never tune on the test set, and never let the same photo or the same speaker appear on both sides, or the score will look too good. Record who is speaking, or which language, right now, because the fairness check needs those labels later. The improvement you claim is the fine-tuned score minus the base score, under identical conditions."
   },
   {
    "target": "start-fig-18",
-   "title": "Data and metrics",
-   "text": "Now, measuring honestly. Split your data first, a few hundred training examples and a held-out test set, and never let the same photo or speaker appear on both sides. Then compare the base model and your fine-tuned model on the same test set with the same metric. For transcripts that metric is often word error rate. Here the model makes one substitution, one deletion and one insertion against six reference words, so the error rate is fifty percent. Try one of these by hand."
+   "title": "Word error rate by hand",
+   "text": "Which score? The two equations above give the common ones. Word error rate counts substitutions, deletions and insertions, divided by the number of reference words. F one balances precision and recall, and is often used for short text answers. Here the model swaps sat for sit, drops a the and adds today: three edits over six reference words, so fifty percent. Libraries do this alignment for you, but try one by hand."
+  },
+  {
+   "target": "start-fig-19",
+   "title": "The normalization trap",
+   "text": "Here is a trap. The reference says it's twenty-five dollars, written with digits and punctuation, and the model says its twenty five dollars in plain words. Raw word error rate calls that more than one hundred percent wrong. After lowercasing, removing punctuation and writing numbers one way, the two are identical, with no training at all. So state which normalizer you use, and consider fine-tuning with and without normalized labels."
   },
   {
    "target": "start-fig-20",
-   "title": "Normalization and fairness",
-   "text": "Two more experiments. First, normalization. The figure just above shows that lowercasing, removing punctuation and writing numbers one way can turn a score of over one hundred percent error into zero, without any training. So you fine-tune with and without normalized labels and compare. Second, fairness. These bars come straight from the papers: English and Arabic speech, and Arabic is several times worse every time. Pick two groups, measure your metric on each, and say whether fine-tuning closed or widened the gap."
+   "title": "Fairness as a gap",
+   "text": "Next, fairness. These bars come straight from the papers: English and Arabic speech on the same benchmark, and Arabic is several times worse for every model. Fairness means measuring the gap, not assuming it. Pick two groups, compute your metric on each, and compare the gap before and after fine-tuning. With small groups, one error can move the score by several points, so say how many examples each group has."
+  },
+  {
+   "target": "start-fig-21",
+   "title": "Errors and the model card",
+   "text": "Numbers alone are not enough. On the left, take your wrong outputs and tag each by cause: misheard, misread the image, wrong reasoning, right answer in the wrong form, or a bad label. In a pipeline, check the transcript first. On the right is the model card, half a page on what the model is for, what it was trained on, how well it works for whom, and where it fails."
   },
   {
    "target": "start-fig-22",
    "title": "The map of the papers",
-   "text": "Here is the map of all eleven papers. Each row shows which inputs a model accepts natively, the smallest size the paper reports, whether it plausibly fits a free T4, and the year it appeared. The vision language models need a speech-to-text stage, the speech models need an image stage, and the omni models take everything. Qwen3-Omni is here as a larger reference model, because it is far too big for a T4. Find the row that matches your task and start with that paper."
+   "text": "Now the map of all eleven papers. Each row shows which inputs a model accepts natively, whether it speaks, the smallest size reported, whether it plausibly fits a free T four, and the year. The vision-language models need a speech-to-text stage, the speech models need an image stage, and the omni models take everything. Read QLoRA first, then the paper for the model you plan to use, then the rest in order."
   },
   {
    "target": "start-steps-01",
    "title": "How to use the atlas",
-   "text": "Finally, how to use the atlas. Every paper tab has a Play intro button for a short introduction, then a guided tour like this one that walks through the key diagrams. Under every figure, equation and table there is a small Guide note, and at the end of each tab a box called Putting it into practice turns the paper into practical advice. The glossary below is there whenever a word is unfamiliar. Next, open QLoRA, the fine-tuning method behind it all, and press Play intro."
+   "text": "And here is how to move through it. Every paper tab opens with a short intro that sets the paper up. Then a guided tour, like this one, walks through its key diagrams in about five minutes. Under every figure, equation and table there is a small Guide note with a plain explanation, and at the end of each tab a box called Putting it into practice turns the paper into advice for your own project."
+  },
+  {
+   "target": "start-callout-01",
+   "title": "Glossary and wrap-up",
+   "text": "Finally, the glossary collects every term from this primer, from adapter and attention to word error rate, so come back whenever a word feels unfamiliar. Let's recap: text, images and sound all become tokens; LoRA and QLoRA let you train a thin slice on a free GPU; and an honest comparison, with normalization and fairness in view, is what makes a result believable. Next comes the first paper, QLoRA."
   }
  ]
 }

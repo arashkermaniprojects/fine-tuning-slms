@@ -27,7 +27,7 @@
   {
    "target": "tinyllava-factory-ifig-04",
    "title": "Where this paper sits",
-   "text": "Finally, where are we in the atlas? QLoRA gave you the method, but only for text. This paper adds the first new sense, one image. Next, SmolVLM makes the same design even smaller. Voice arrives later, from Voxtral onward, so if you choose this model, you will put a speech to text model in front of it. When you're ready, press Play guided tour."
+   "text": "Finally, where are we in the atlas? QLoRA gave you the method, but only for text. This paper adds the first new sense, one image. Next, SmolVLM makes the same design even smaller. Voice arrives later, from Voxtral onward, so if you choose this model, you will put a speech to text model in front of it. Next comes the guided tour."
   }
  ]
 }

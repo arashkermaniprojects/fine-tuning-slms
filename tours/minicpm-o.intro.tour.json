@@ -27,7 +27,7 @@
   {
    "target": "minicpm-o-ifig-04",
    "title": "Where this paper sits",
-   "text": "Finally, the map. MiniCPM-o follows Qwen3-Omni, a large mixture of experts model, and comes just before Gemma 4, which answers only in text. What it adds is full-duplex interaction in a single dense model. Text, images and voice are all native, so no extra speech to text model is needed. To fine-tune it, you would put LoRA on the Qwen3 layers and keep the encoders frozen. When you're ready, press Play guided tour."
+   "text": "Finally, the map. MiniCPM-o follows Qwen3-Omni, a large mixture of experts model, and comes just before Gemma 4, which answers only in text. What it adds is full-duplex interaction in a single dense model. Text, images and voice are all native, so no extra speech to text model is needed. To fine-tune it, you would put LoRA on the Qwen3 layers and keep the encoders frozen. Next comes the guided tour."
   }
  ]
 }

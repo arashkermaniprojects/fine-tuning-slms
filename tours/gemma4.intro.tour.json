@@ -27,7 +27,7 @@
   {
    "target": "gemma4-ifig-04",
    "title": "Where this paper sits",
-   "text": "Finally, the map. Just before this, MiniCPM-o showed one model that sees, hears and talks back. Gemma 4 takes a different route: five sizes, small frozen encoders, and a 12B model with no encoders at all. It reads text, images and speech, but always answers in text. After this tab, the next step is your own fine-tuned model. When you're ready, press Play guided tour."
+   "text": "Finally, the map. Just before this, MiniCPM-o showed one model that sees, hears and talks back. Gemma 4 takes a different route: five sizes, small frozen encoders, and a 12B model with no encoders at all. It reads text, images and speech, but always answers in text. After this tab, the next step is your own fine-tuned model. Next comes the guided tour."
   }
  ]
 }
