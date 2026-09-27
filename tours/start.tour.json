@@ -1,0 +1,67 @@
+{
+ "paper": "start",
+ "button": "Play introduction",
+ "title": "Start here",
+ "stops": [
+  {
+   "target": "start-paper-01",
+   "title": "Welcome to the atlas",
+   "text": "Welcome to the atlas for MAI 656 and Assignment 1. In this assignment you take a small open model, teach it a task that uses text, images and voice, and then measure honestly what changed. The eleven papers in this atlas describe the models you can start from and the fine-tuning method you will use. Before you open them, this introduction gives you the ideas they all take for granted. It takes about seven minutes, and nothing here assumes you have done this before."
+  },
+  {
+   "target": "start-fig-01",
+   "title": "The assignment in one picture",
+   "text": "Here is the whole assignment in one drawing. Text, an image and a spoken question go in, and a text answer comes out. On the left, one model has its own eyes and ears, so all three inputs enter the same network. On the right, the model cannot hear, so a small speech-to-text model such as Whisper writes down the question first. Both routes are allowed. Either way, you train only the small part marked in rust, the LoRA adapters, and you score the text answer."
+  },
+  {
+   "target": "start-fig-04",
+   "title": "Tokens and next-token prediction",
+   "text": "Let's start with how a language model reads. Text is cut into tokens, small word pieces, and each token becomes a vector of numbers. The model then does one thing only: it predicts the next token, picks one, appends it and repeats. On the right is the chat template, the format with system, user and assistant turns that instruction-tuned models were trained on. Your fine-tuning data must use this template, and the loss is computed on the assistant's answer, not on your question."
+  },
+  {
+   "target": "start-fig-08",
+   "title": "How a model sees",
+   "text": "Now, how does a model see? The image is cut into small square patches, sixteen pixels wide in this example, so one picture gives about a thousand patches. A frozen vision encoder, such as SigLIP or CLIP, turns them into features. A compression step reduces their number, and a small trainable projector translates them into tokens the language model understands. From then on, the picture is just more tokens sitting next to your words. Notice the colours: teal is vision, indigo is language, and rust is what you train."
+  },
+  {
+   "target": "start-fig-10",
+   "title": "How a model hears",
+   "text": "Hearing works in the same way. The sound wave becomes a log-mel spectrogram, which is simply a picture of sound energy across frequencies over time. A Whisper-style audio encoder turns that into frames, and a small adapter packs four frames into one token. In Voxtral that gives twelve and a half audio tokens per second, so a thirty second question costs three hundred and seventy five tokens. Remember that number: audio and images fill memory much faster than text, and memory is your main limit."
+  },
+  {
+   "target": "start-fig-12",
+   "title": "Omni models",
+   "text": "Put all of this together and you get an omni model. Every encoder feeds one language model, called the Thinker, which reads text, images, audio and even video, and writes the answer. A second part, the Talker, turns the Thinker's hidden states into speech. Qwen2.5-Omni, Qwen3-Omni and MiniMind-O are built this way. For your assignment you usually need only the text answer, so you can leave the Talker frozen or not load it at all. If your model has no ears, use a pipeline instead."
+  },
+  {
+   "target": "start-fig-14",
+   "title": "LoRA and QLoRA",
+   "text": "So how do you fine-tune a model with billions of weights on a free GPU? Full fine-tuning updates every weight and needs huge memory. LoRA freezes the model and adds two thin matrices beside each weight matrix, and only those are trained. In this example that is about sixty five thousand numbers instead of four million. QLoRA goes one step further and stores the frozen model in four bits. In a multimodal model you keep the encoders frozen and put the adapters on the language model."
+  },
+  {
+   "target": "start-fig-16",
+   "title": "Will it fit the GPU?",
+   "text": "Now the reality check. The free Colab T4 has sixteen gigabytes, and it has no fast bf16, so you train in fp16. The top bar comes from the QLoRA paper: a seven billion model in four bits trained in about seven gigabytes. The middle bar is a rough estimate for a two billion vision language model, where image and audio activations take most of the space. The bottom bar, full fine-tuning, would need over a hundred gigabytes. If you run out of memory, shorten the inputs first."
+  },
+  {
+   "target": "start-fig-18",
+   "title": "Data and metrics",
+   "text": "Part C is about measuring honestly. Split your data first, at least three hundred training and fifty test examples, and never let the same photo or speaker appear on both sides. Then compare the base model and your fine-tuned model on the same test set with the same metric. For transcripts that metric is often word error rate. Here the model makes one substitution, one deletion and one insertion against six reference words, so the error rate is fifty percent. Try one of these by hand."
+  },
+  {
+   "target": "start-fig-20",
+   "title": "Normalization and fairness",
+   "text": "Two more experiments. First, normalization. The figure just above shows that lowercasing, removing punctuation and writing numbers one way can turn a score of over one hundred percent error into zero, without any training. So you fine-tune with and without normalized labels and compare. Second, fairness. These bars come straight from the papers: English and Arabic speech, and Arabic is several times worse every time. Pick two groups, measure your metric on each, and say whether fine-tuning closed or widened the gap."
+  },
+  {
+   "target": "start-fig-22",
+   "title": "The map of the papers",
+   "text": "Here is the map of all eleven papers. Each row shows which inputs a model accepts natively, the smallest size the paper reports, whether it plausibly fits a free T4, and which student folder it belongs to. The vision language models need a speech-to-text stage, the speech models need an image stage, and the omni models take everything. Qwen3-Omni is reference reading only, because it is far too big for a T4. Find your own folder in the last column and start with those papers."
+  },
+  {
+   "target": "start-steps-01",
+   "title": "How to use the atlas",
+   "text": "Finally, how to use the atlas. Every paper tab has a Play intro button for a short introduction, then a guided tour like this one that walks through the key diagrams. Under every figure, equation and table there is a small Guide note, and at the end of each tab a box called For your assignment turns the paper into practical advice. The glossary below is there whenever a word is unfamiliar. Next, open QLoRA, the fine-tuning tool you will use, and press Play intro."
+  }
+ ]
+}

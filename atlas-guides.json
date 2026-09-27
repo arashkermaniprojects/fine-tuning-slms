@@ -1,5 +1,284 @@
 [
  {
+  "id": "start-paper-01",
+  "paper": "start",
+  "kind": "paper",
+  "label": "",
+  "section": "",
+  "anchor": "#g-start-paper-01",
+  "text": "This tab answers one question: what do you need to know before the eleven papers make sense? The answer is a short visual primer written for MAI 656 and Assignment 1. It starts with the assignment in one picture, then explains tokens, transformers, how a model sees images and hears speech, and what omni models are. Next come LoRA and QLoRA on a free sixteen gigabyte T4, and then data, metrics, normalization and fairness for Part C. It closes with a map of all eleven papers and a glossary. After this tab come QLoRA, the fine-tuning tool, then the vision language models TinyLLaVA Factory and SmolVLM, the speech models Voxtral and Voxtral Realtime, the efficient backbone LFM2, and the omni models MiniMind-O, Qwen2.5-Omni, Qwen3-Omni, MiniCPM-o 4.5 and Gemma 4. Every block has a Guide note like this one."
+ },
+ {
+  "id": "start-fig-01",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "The assignment in one picture",
+  "anchor": "#g-start-fig-01",
+  "text": "There are two ways to build your system. On the left, one model already has its own image and audio encoders, so text, image and voice all enter the same network. On the right, a vision language model cannot hear, so a speech-to-text model such as Whisper turns the voice into a transcript first. Both routes are allowed. The small rust tag marks the part you train with LoRA, and in both cases the answer is text you can score."
+ },
+ {
+  "id": "start-fig-02",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "The assignment in one picture",
+  "anchor": "#g-start-fig-02",
+  "text": "The assignment is one flow in four parts. Part A explains how each paper's model takes in text, image and voice. Part B builds a dataset and runs the fine-tuning. Part C measures the result in four experiments, and Part D packages the report, notebook and model card. The marks underneath show where effort pays: the fine-tuning run alone is worth four of the fifteen marks, and grey tags point to the primer section for each part."
+ },
+ {
+  "id": "start-fig-03",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "From text to tokens",
+  "anchor": "#g-start-fig-03",
+  "text": "A model never sees letters, only vectors. The tokenizer cuts the sentence into sub-word pieces, often with the leading space attached, and each piece has a fixed ID in the vocabulary. The embedding table then turns each ID into a vector of d numbers, where d is the model's width. The IDs shown are illustrative. The practical lesson is simple: always use the tokenizer and processor that ship with your checkpoint."
+ },
+ {
+  "id": "start-fig-04",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "From text to tokens",
+  "anchor": "#g-start-fig-04",
+  "text": "Everything a language model does comes from predicting the next token. On the left, the model gives a probability to every possible next token, picks one, appends it and repeats. On the right is the chat template, where system, user and assistant turns are marked with special tokens, and image and audio tokens sit inside the user turn. Instruction-tuned models were trained in this format, so your fine-tuning data must use it too, with the loss on the answer only."
+ },
+ {
+  "id": "start-fig-05",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Transformers and language models in 5 minutes",
+  "anchor": "#g-start-fig-05",
+  "text": "Attention is how tokens share information. The word it sends a query, compares it with the key of every other word, and pulls in most from cat, shown by the thickest line. Every token does this at the same time in every layer. The weights here are illustrative. This matters for you because image and audio tokens take part in the same attention, which is how the model connects your spoken question to the picture."
+ },
+ {
+  "id": "start-fig-06",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Transformers and language models in 5 minutes",
+  "anchor": "#g-start-fig-06",
+  "text": "A decoder language model is a stack of identical layers. Tokens are embedded, pass through L layers that each contain an attention block and a feed-forward block, and an output head turns the result into next-token probabilities. The parameters are the numbers in the weight matrices of these linear layers, so a two billion parameter model holds about two billion of them. Those same linear layers are where LoRA adapters attach in section seven."
+ },
+ {
+  "id": "start-fig-07",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Transformers and language models in 5 minutes",
+  "anchor": "#g-start-fig-07",
+  "text": "Images and audio fill the context much faster than text. A typed question is only about fifteen tokens, but thirty seconds of speech costs three hundred to about seven hundred and fifty tokens and one tiled image in LFM2-VL costs about two thousand eight hundred. Pixel shuffle brings a SmolVLM tile from one thousand and twenty four tokens down to sixty four. Because training memory grows with sequence length, these bars predict whether your run fits on a T4."
+ },
+ {
+  "id": "start-eq-01",
+  "paper": "start",
+  "kind": "eq",
+  "label": "(1)",
+  "section": "Transformers and language models in 5 minutes",
+  "anchor": "#g-start-eq-01",
+  "text": "This is the attention formula. Q holds the queries, K the keys and V the values. Multiplying Q by K transposed scores every pair of tokens, dividing by the square root of d k keeps the scores in a stable range, and softmax turns each row into weights that sum to one. The output mixes the values with those weights. The score matrix is tokens by tokens, so cost grows with the square of the sequence length."
+ },
+ {
+  "id": "start-eq-02",
+  "paper": "start",
+  "kind": "eq",
+  "label": "(2)",
+  "section": "Transformers and language models in 5 minutes",
+  "anchor": "#g-start-eq-02",
+  "text": "Weight memory is roughly the number of parameters times the bytes used for each one. A two billion parameter model at two bytes per parameter, which is FP16, needs about four gigabytes, and in four bits, half a byte each, about one gigabyte plus a little for scale constants. This one line explains why QLoRA stores the frozen model in four bits, and it is the first check before you pick a model for the free T4."
+ },
+ {
+  "id": "start-tbl-01",
+  "paper": "start",
+  "kind": "tbl",
+  "label": "",
+  "section": "Transformers and language models in 5 minutes",
+  "anchor": "#g-start-tbl-01",
+  "text": "The table applies the memory rule to a two billion and a seven billion parameter model at four precisions. Read across a row: each halving of the bytes halves the memory, from twenty eight gigabytes for a seven billion model in FP32 down to about three and a half in four-bit NF4. These are weights only. Training adds gradients, optimizer states and activations, and remember that the T4 runs FP16 but not fast BF16."
+ },
+ {
+  "id": "start-fig-08",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "How a model sees",
+  "anchor": "#g-start-fig-08",
+  "text": "Here is the path from pixels to tokens. The image is cut into sixteen by sixteen pixel patches, so a five hundred and twelve pixel square gives one thousand and twenty four patches. A frozen vision transformer such as SigLIP turns them into features, a compression step cuts their number, and a small trainable projector maps them into the language model's embedding space. The resulting visual tokens sit beside the text tokens,, and the language model reads both."
+ },
+ {
+  "id": "start-fig-09",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "How a model sees",
+  "anchor": "#g-start-fig-09",
+  "text": "Two knobs set how many tokens an image costs. Tiling splits a large image into tiles plus a small thumbnail so fine text stays readable, at five times the tokens. Pixel shuffle folds each r by r block of features into one wider token, dividing the count by r squared: four for r equal two, sixteen for SmolVLM's r equal four. On a sixteen gigabyte GPU, fewer tiles is an easy saving, but document and OCR tasks suffer first."
+ },
+ {
+  "id": "start-fig-10",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "How a model hears and speaks",
+  "anchor": "#g-start-fig-10",
+  "text": "Audio enters the model the same way images do. The sixteen kilohertz waveform becomes a log-mel spectrogram, a picture of energy per frequency band over time at one hundred frames per second. A Whisper-style encoder turns it into fifty frames per second, and a small adapter stacks four frames into one, giving twelve and a half audio tokens per second in Voxtral. So thirty seconds of speech becomes three hundred and seventy five tokens next to your text."
+ },
+ {
+  "id": "start-fig-11",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "How a model hears and speaks",
+  "anchor": "#g-start-fig-11",
+  "text": "The cascade on the top left transcribes first, so tone is lost and speech recognition mistakes pass straight on; the native route on the top right lets the language model hear the audio tokens itself. Bottom left, a Talker produces codec tokens that a decoder turns into sound. Bottom right, a streaming model writes text a fixed delay tau behind the speaker, while an offline model waits for the end. Your assignment is offline."
+ },
+ {
+  "id": "start-fig-12",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Omni models",
+  "anchor": "#g-start-fig-12",
+  "text": "An omni model puts every encoder in front of one language model called the Thinker. Text, images, video frames and audio pass through frozen encoders and small projectors, and the Thinker reasons over all of them and writes the text answer. A separate Talker reads the Thinker's hidden states and produces speech. Qwen2.5-Omni, Qwen3-Omni and MiniMind-O follow this design. For Assignment 1 you usually need only text, so the Talker can stay frozen or unloaded."
+ },
+ {
+  "id": "start-fig-13",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Omni models",
+  "anchor": "#g-start-fig-13",
+  "text": "This flow helps you choose a route. First ask whether your model accepts voice. If it does, use its native audio input; if not, put a speech-to-text model in front of a vision language model. Then ask whether it fits sixteen gigabytes with QLoRA; if not, use the smallest variant, shorter inputs, or ask for a university GPU. The bottom line states the trade-off: pipelines are simple but pass on transcription errors, native models hear the audio but are bigger."
+ },
+ {
+  "id": "start-fig-14",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Fine-tuning without a big GPU",
+  "anchor": "#g-start-fig-14",
+  "text": "Three ways to fine-tune one weight matrix. Full fine-tuning trains every number in W, so each needs a gradient and optimizer states. LoRA freezes W and trains two thin matrices, B and A, whose product is added to it; at width two thousand and forty eight and rank sixteen, that is sixty five thousand numbers instead of four million. QLoRA keeps the same adapters but stores the frozen W in four-bit NF4, cutting weight memory to about a quarter."
+ },
+ {
+  "id": "start-eq-03",
+  "paper": "start",
+  "kind": "eq",
+  "label": "(3)",
+  "section": "Fine-tuning without a big GPU",
+  "anchor": "#g-start-eq-03",
+  "text": "This is the LoRA update. The new weight W prime equals the frozen weight W plus B times A, scaled by alpha over r. B has d rows and r columns, A has r rows and k columns, and the rank r is much smaller than both sides, so only r times d plus k numbers are trained. QLoRA's recipe uses rank sixty four and alpha sixteen, and found that adapters on every linear layer matter more than the rank."
+ },
+ {
+  "id": "start-fig-15",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Fine-tuning without a big GPU",
+  "anchor": "#g-start-fig-15",
+  "text": "In a multimodal model you freeze the senses and adapt the brain. The vision and audio encoders stay frozen, the small projectors or adapters can be trained fully, and LoRA goes on the language model's attention and feed-forward projections. The Talker, if there is one, stays frozen. One trap: setting target modules to all linear layers also hits the encoders, so list the language model's module names. These are the tabs' recommendations, so report whatever choice you make."
+ },
+ {
+  "id": "start-fig-16",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Fine-tuning without a big GPU",
+  "anchor": "#g-start-fig-16",
+  "text": "On a T4, activations decide whether you fit. The top bar uses the QLoRA paper's own numbers: a seven billion model in four bits takes about five gigabytes, and the whole run about six point nine. The middle bar is our rough estimate for a two billion vision language model, dominated by image and audio activations. The bottom bar shows full sixteen-bit fine-tuning of seven billion parameters needing about one hundred and twelve gigabytes, far beyond the dashed limit."
+ },
+ {
+  "id": "start-fig-17",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Data, metrics and experiments",
+  "anchor": "#g-start-fig-17",
+  "text": "Good experiments start with a clean split. At least three hundred training and fifty test examples, each combining an image, audio, a question and an answer, with the source and licence stated. Keep the same photo or speaker out of both sides, and record group labels now for the fairness test. On the right, the base model and the fine-tuned model are scored on the identical test set, with the same prompt, metric and normalization; the difference is your result."
+ },
+ {
+  "id": "start-eq-04",
+  "paper": "start",
+  "kind": "eq",
+  "label": "(4)",
+  "section": "Data, metrics and experiments",
+  "anchor": "#g-start-eq-04",
+  "text": "Word error rate counts the edits needed to turn the model's transcript into the reference. S is substitutions, D is deletions and I is insertions, and their sum is divided by N, the number of words in the reference. Lower is better, and because insertions have no limit it can go above one hundred percent. Character error rate is the same idea on characters. The next figure works through one example by hand."
+ },
+ {
+  "id": "start-eq-05",
+  "paper": "start",
+  "kind": "eq",
+  "label": "(5)",
+  "section": "Data, metrics and experiments",
+  "anchor": "#g-start-eq-05",
+  "text": "F one combines precision and recall into one number. Precision P is the share of your predicted items that are correct, true positives over true plus false positives. Recall R is the share of correct items you found, true positives over true positives plus false negatives. F one is two P R over P plus R, their harmonic mean. For short text answers it is often computed on overlapping words, while exact match only credits identical answers."
+ },
+ {
+  "id": "start-fig-18",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Data, metrics and experiments",
+  "anchor": "#g-start-fig-18",
+  "text": "Here is word error rate done by hand. The reference has six words. The model writes sit instead of sat, a substitution, drops the second the, a deletion, and adds today, an insertion. Three edits over six words gives fifty percent. Libraries such as jiwer find this alignment automatically, but showing one example like this in your report proves you understand the metric you are using."
+ },
+ {
+  "id": "start-fig-19",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Data, metrics and experiments",
+  "anchor": "#g-start-fig-19",
+  "text": "Normalization can change a score more than training does. The reference says It's 25 dollars with a full stop, and the model says its twenty five dollars. Raw, that is four edits over three words, one hundred and thirty three percent. After lowercasing, removing punctuation and writing numbers one way, the two strings are identical and the error is zero. Part C asks you to train with and without normalized labels, then score both runs with one fixed scorer."
+ },
+ {
+  "id": "start-fig-20",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Data, metrics and experiments",
+  "anchor": "#g-start-fig-20",
+  "text": "Group gaps are real and large in these papers. Each pair of bars is a model's word error rate on English and on Arabic speech from the FLEURS benchmark, taken from the Voxtral, Voxtral Realtime and Gemma 4 tabs. Arabic is between about two and a half and nearly seven times worse. For your fairness test, report the metric for each group, how many examples each group has, and whether fine-tuning widened or closed the gap."
+ },
+ {
+  "id": "start-fig-21",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Data, metrics and experiments",
+  "anchor": "#g-start-fig-21",
+  "text": "Two final pieces of Part C and D. On the left, tag each of your ten wrong outputs by cause: misheard audio, misread image, wrong reasoning, right answer in the wrong form, or a wrong label. The counts are only an example. Wrong-form errors point back to normalization, and misheard ones to the speech stage. On the right is the model card outline: intended use, training data, training settings, results per group, limitations and licence, all in half a page."
+ },
+ {
+  "id": "start-fig-22",
+  "paper": "start",
+  "kind": "fig",
+  "label": "Primer",
+  "section": "Map of the 11 papers",
+  "anchor": "#g-start-fig-22",
+  "text": "This map is your guide to the atlas. Each row is one paper, grouped as fine-tuning toolkit, seeing, hearing, efficient backbone and omni. Filled dots show which inputs the model takes natively and whether it can speak; empty dots mean you need a pipeline stage. The next columns give the smallest size the tab reports, whether it plausibly fits a free T4, and which student folder holds the article. Qwen3-Omni is reference reading only. Read QLoRA first, then your folder."
+ },
+ {
+  "id": "start-steps-01",
+  "paper": "start",
+  "kind": "steps",
+  "label": "",
+  "section": "Map of the 11 papers",
+  "anchor": "#g-start-steps-01",
+  "text": "These five steps are the intended way to work through the atlas. Start with this primer so the vocabulary is familiar. On each paper tab, play the short intro first, then the guided tour, which walks through the key diagrams in about five minutes. Open the Guide notes under any block you want explained in plain words. Finish each tab with its For your assignment box, which turns the paper into concrete advice for your model and experiments."
+ },
+ {
+  "id": "start-callout-01",
+  "paper": "start",
+  "kind": "callout",
+  "label": "",
+  "section": "Glossary",
+  "anchor": "#g-start-callout-01",
+  "text": "The glossary collects forty terms used across the atlas, in alphabetical order, each with a one-line plain definition. Use it as a lookup table while you read the papers, and as a checklist for Part A: if you can explain tokens, encoders, projectors, LoRA, QLoRA, word error rate and normalization in your own words, you are ready. Several terms, such as Thinker, Talker and codec tokens, only appear in the omni papers."
+ },
+ {
   "id": "qlora-paper-01",
   "paper": "qlora",
   "kind": "paper",

@@ -5,7 +5,7 @@
   {
    "target": "qlora-paper-01",
    "title": "Welcome to the atlas",
-   "text": "Welcome to the atlas for Assignment 1. Over eleven papers we will see how compact open models read text, look at images and listen to speech, and how you can fine-tune one of them on a free Colab or Kaggle GPU. We start with the tool, not a model. QLoRA answers a practical question: can you fine-tune a large language model on a single GPU without losing quality? Its answer is yes, and it is the method you will use in Part B."
+   "text": "This is the first of the eleven papers, and it is about the tool, not a model. QLoRA answers a practical question: can you fine-tune a large language model on a single GPU without losing quality? Its answer is yes, and it is the method you will use in Part B."
   },
   {
    "target": "qlora-fig-01",
