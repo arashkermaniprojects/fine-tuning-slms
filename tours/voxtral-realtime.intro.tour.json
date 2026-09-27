@@ -1,0 +1,33 @@
+{
+ "paper": "voxtral-realtime",
+ "kind": "intro",
+ "button": "Play intro",
+ "title": "Before you read Voxtral Realtime",
+ "stops": [
+  {
+   "target": "voxtral-realtime-paper-01",
+   "title": "A recognizer that keeps up",
+   "text": "Welcome to Voxtral Realtime. In the last tab, Voxtral listened to a finished recording and then answered. This paper asks a harder question: can a model write down what you say while you are still saying it, and still be as accurate as one that waits? Before we open it, let me give you three ideas the authors take for granted, so the diagrams make sense when you get to them."
+  },
+  {
+   "target": "voxtral-realtime-ifig-01",
+   "title": "Streaming and delay",
+   "text": "The first idea is streaming. An offline model hears the whole clip before writing anything, so it can use future sound to settle each word. A streaming model must commit early. Each word appears a fixed delay after it is spoken, and the paper calls that delay tau. Short delays feel live but are less accurate. Keep this trade-off in mind, because every result in the paper is reported at several delays."
+  },
+  {
+   "target": "voxtral-realtime-ifig-02",
+   "title": "From sound to tokens",
+   "text": "The second idea is how sound becomes something a language model can read. The waveform is turned into a log-Mel spectrogram, a picture of loudness in each pitch band. A causal encoder, meaning one that only looks at sound already heard, produces fifty vectors a second. An adapter then packs four of them into one vector every 80 milliseconds, and the decoder writes one token per step, either a wait token or a word."
+  },
+  {
+   "target": "voxtral-realtime-ifig-03",
+   "title": "How transcripts are scored",
+   "text": "The third idea is the score. Word error rate counts substitutions, deletions and insertions, divided by the number of words in the reference. Lower is better. You will compute it yourself in Part C, so notice one trap: capital letters and punctuation count as errors unless you normalize both texts. The glossary below also explains FLEURS and Common Voice, the two test sets, and Whisper, the offline baseline."
+  },
+  {
+   "target": "voxtral-realtime-ifig-04",
+   "title": "Where this paper sits",
+   "text": "Finally, the map. This is paper five of eleven. It takes voice in and gives text out, nothing else, so for Assignment 1 you would use it as the speech to text stage in front of a vision language model. Its gap between Arabic and English is also a ready made fairness test. Next comes LFM2, a fast backbone with image and audio variants. When you're ready, press Play guided tour."
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "paper": "tinyllava-factory",
+ "kind": "intro",
+ "button": "Play intro",
+ "title": "Before you read TinyLLaVA Factory",
+ "stops": [
+  {
+   "target": "tinyllava-factory-paper-01",
+   "title": "A codebase, not a model",
+   "text": "Before we open this paper, a warning: it does not propose a new model. TinyLLaVA Factory is a codebase for building and training small vision-language models, models that read text plus one picture and answer in text. Why should you care? Because it shows the simplest recipe for adding vision to a small language model, and it already includes LoRA and QLoRA training. Let me give you three ideas first."
+  },
+  {
+   "target": "tinyllava-factory-ifig-01",
+   "title": "How a photo becomes tokens",
+   "text": "Idea one. A language model only reads tokens, so the photo has to become tokens too. The vision tower cuts the image into small patches and describes each one as a vector. Then the connector, a small two layer network, reshapes those vectors so they look like word embeddings. These visual tokens go in front of your question, and the language model reads everything as one sequence."
+  },
+  {
+   "target": "tinyllava-factory-ifig-03",
+   "title": "Parts chosen by name",
+   "text": "Idea two is from software engineering. In this codebase every part, the vision tower, the connector, the language model and the training recipe, is chosen by name in a config file. A factory looks up the name and builds the part. So comparing CLIP with SigLIP, or a tiny language model with a bigger one, means changing one line. Remember the training recipe setting: it decides what is frozen, fully trained or LoRA tuned."
+  },
+  {
+   "target": "tinyllava-factory-gloss-01",
+   "title": "Words to keep handy",
+   "text": "Idea three is vocabulary. Three terms carry this paper. The vision tower is the image encoder. The connector, also called a projector, links vision to language. The chat template is the text format each model family expects, and it decides which tokens the model learns from. You will also meet benchmark names like TextVQA, which asks questions about text inside images, and POPE, which checks whether the model imagines objects that are not there."
+  },
+  {
+   "target": "tinyllava-factory-ifig-04",
+   "title": "Where this paper sits",
+   "text": "Finally, where are we in the atlas? QLoRA gave you the method, but only for text. This paper adds the first new sense, one image. Next, SmolVLM makes the same design even smaller. Voice arrives later, from Voxtral onward, so if you choose this model, you will put a speech to text model in front of it. When you're ready, press Play guided tour."
+  }
+ ]
+}

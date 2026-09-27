@@ -1,0 +1,33 @@
+{
+ "paper": "minimind-o",
+ "kind": "intro",
+ "button": "Play intro",
+ "title": "Before you read MiniMind-O",
+ "stops": [
+  {
+   "target": "minimind-o-paper-01",
+   "title": "What this paper is",
+   "text": "Welcome to MiniMind-O. This is the smallest model in our atlas that does everything your assignment asks for: it listens to speech, looks at images, reads text, and answers in text and in its own voice. It has only about one tenth of a billion trainable parameters, and its code, weights and training data are all open. Before the full tour, let me give you four ideas you will need."
+  },
+  {
+   "target": "minimind-o-ifig-01",
+   "title": "Sound as tokens",
+   "text": "First, how sound gets in and out. Incoming speech is turned into a spectrogram, and a frozen encoder called SenseVoice turns that into feature frames. A small trainable projector places each frame into a reserved slot in the language model's input. Images work the same way, as sixty four tokens from SigLIP2. Outgoing speech is a stream of Mimi codec tokens, eight per frame, which a decoder turns back into sound."
+  },
+  {
+   "target": "minimind-o-ifig-03",
+   "title": "Thinker and Talker",
+   "text": "Second, the model is split in two. The Thinker is the language model and writes the text. A smaller Talker reads the Thinker's middle layer, layer three, and predicts the audio codes. Notice the staircase: each codebook starts one step after the one above. After eight steps a full frame exists, so sound can play while the text is still being written. That is streaming, and the wait for the first sound is the latency."
+  },
+  {
+   "target": "minimind-o-gloss-01",
+   "title": "Words to know",
+   "text": "Third, some vocabulary. Keep an eye on four terms. The projector is the small trainable bridge from an encoder into the language model. Placeholder tokens are the audio pad and image pad slots it fills. CER, the character error rate, is how the paper checks whether the spoken answer matches the text answer. And mixture of experts describes the larger variant, which has more weights but uses about the same number for each token."
+  },
+  {
+   "target": "minimind-o-ifig-04",
+   "title": "Where it sits",
+   "text": "Finally, where this paper sits. After LFM2, which kept vision and audio in separate models, MiniMind-O puts hearing, seeing and speaking into one tiny open model you can read line by line. Next, Qwen2.5-Omni scales the same Thinker and Talker idea to seven billion parameters and adds video. One warning for your fairness experiment: this model's English is weaker than its Chinese. When you're ready, press Play guided tour."
+  }
+ ]
+}

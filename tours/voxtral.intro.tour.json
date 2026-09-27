@@ -1,0 +1,33 @@
+{
+ "paper": "voxtral",
+ "kind": "intro",
+ "button": "Play intro",
+ "title": "Before you read Voxtral",
+ "stops": [
+  {
+   "target": "voxtral-paper-01",
+   "title": "A model that listens",
+   "text": "So far the atlas has covered text and images. Voxtral is our first model that listens. Mistral took a Whisper speech encoder and attached it to one of their language models, so you can hand it a recording and a question and get a written answer. For your assignment it is a strong candidate for the voice part. Before we read it, let me give you the three ideas the paper takes for granted."
+  },
+  {
+   "target": "voxtral-ifig-01",
+   "title": "How sound becomes tokens",
+   "text": "First, how sound becomes tokens. The waveform is turned into a log-Mel spectrogram, a picture of sound. The Whisper encoder reads it and produces fifty vectors every second. That is far too many for a language model, so a small adapter merges every four into one audio token. At twelve and a half tokens per second, forty minutes of speech fits inside a thirty two thousand token context window, right next to your text prompt."
+  },
+  {
+   "target": "voxtral-ifig-02",
+   "title": "Scoring with word error rate",
+   "text": "Second, how we score speech. The paper's main number is word error rate, or WER. You align the output with the reference transcript, count words that were swapped, dropped or added, and divide by the reference length. Lower is better. Look at the example: writing ten as digits counts as a mistake. That is why text normalization, one of your required experiments, can move WER a lot."
+  },
+  {
+   "target": "voxtral-gloss-01",
+   "title": "Words to know",
+   "text": "Third, a few words the paper never explains. TTS means text to speech: the authors made many spoken training questions by reading text aloud with a synthetic voice. Diarization means labelling who speaks when, which they used to cut long recordings into pieces. DPO is a way to tune a model on pairs of better and worse answers. And the primer just above shows what you would train: LoRA on the decoder, with the Whisper encoder frozen."
+  },
+  {
+   "target": "voxtral-ifig-04",
+   "title": "Where Voxtral sits",
+   "text": "Finally, where this paper sits. Before it, SmolVLM taught a small model to see. Voxtral teaches one to hear, with speech and text in and text out. It cannot see images, so for a task with all three inputs, pair it with a small vision model. Next comes Voxtral Realtime, which transcribes while you are still speaking. When you're ready, press Play guided tour."
+  }
+ ]
+}

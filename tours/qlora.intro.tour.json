@@ -1,0 +1,33 @@
+{
+ "paper": "qlora",
+ "kind": "intro",
+ "button": "Play intro",
+ "title": "Before you read QLoRA",
+ "stops": [
+  {
+   "target": "qlora-paper-01",
+   "title": "Why start here",
+   "text": "Before we read QLoRA together, let me give you the three ideas it takes for granted. This paper is the tool you will use in Part B of Assignment 1. It shows how to fine-tune a large language model on a single GPU, and the same trick lets you fine-tune a small model on a free Colab or Kaggle GPU. Two minutes now will make the rest of the tab much easier."
+  },
+  {
+   "target": "qlora-ifig-01",
+   "title": "Bits decide memory",
+   "text": "First, memory. Every weight is one number, and the number of bits you store it in sets the cost. A seven billion parameter model needs twenty eight gigabytes in thirty two bit floats, fourteen in sixteen bit, and about three and a half in four bit. The free T4 has sixteen gigabytes, and training needs extra room for gradients and optimizer states. So the frozen model must shrink."
+  },
+  {
+   "target": "qlora-ifig-02",
+   "title": "Quantization is rounding",
+   "text": "Second, quantization. Four bits can name only sixteen values, so each weight is scaled and snapped to the nearest allowed level. The paper's new data type, NF4, puts those levels where weights actually are, crowded near zero. The model stores the small codes plus a scale, and turns each weight back into sixteen bit numbers when it is used, so the arithmetic stays precise."
+  },
+  {
+   "target": "qlora-ifig-03",
+   "title": "LoRA trains an add-on",
+   "text": "Third, LoRA. Instead of changing a huge weight matrix, you freeze it and learn two thin matrices beside it. With rank sixteen that is under one percent of the numbers. Keep a few terms from the glossary in mind as you read: the rank, double quantization, which shrinks the scales too, and paged optimizers, which move memory to the CPU during spikes."
+  },
+  {
+   "target": "qlora-ifig-04",
+   "title": "Where this paper sits",
+   "text": "Finally, where this paper sits. QLoRA is the first of eleven papers, and it handles text only. It gives you the fine-tuning recipe, but not a model that sees or hears. The next tab, TinyLLaVA Factory, adds images to a small language model, and later tabs add voice. Your job is to bring the two together. When you're ready, press Play guided tour."
+  }
+ ]
+}

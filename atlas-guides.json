@@ -414,6 +414,51 @@
   "text": "Use this box as your checklist for Part B. First decide how your pipeline covers text, image and voice, since QLoRA itself only fine-tunes a text model. Then check memory on a real batch, set float sixteen compute on the T4, put LoRA on the language model's linear layers, start from the paper's hyperparameters, and measure the group gap for both base and finetuned models."
  },
  {
+  "id": "qlora-ifig-01",
+  "paper": "qlora",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qlora-ifig-01",
+  "text": "Memory on a GPU is decided by how many bits store each weight. The bars show the weights of a seven billion parameter model: twenty eight gigabytes in thirty two bit floats, fourteen in sixteen bit, and three and a half in four bit. The dashed line is the sixteen gigabytes of a free Colab T4. Training also needs gradients and optimizer states, so for Assignment 1 you must shrink the frozen weights and train only a few."
+ },
+ {
+  "id": "qlora-ifig-02",
+  "paper": "qlora",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qlora-ifig-02",
+  "text": "Quantization is rounding. Four bits can name only sixteen values, so each real weight, a blue dot, is scaled and snapped to the nearest allowed level, a magenta tick. These ticks are the NF4 levels, crowded near zero where most weights sit. The model stores only the four bit code and one scale per block, and turns the weight back into sixteen bit numbers each time the layer runs, which is why accuracy survives."
+ },
+ {
+  "id": "qlora-ifig-03",
+  "paper": "qlora",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qlora-ifig-03",
+  "text": "LoRA leaves the big weight matrix W frozen and learns two thin matrices, L one and L two, whose product is added to the layer's output. With a four thousand by four thousand matrix and rank sixteen, you train about 131 thousand numbers instead of 16.8 million, less than one percent. Only the rust parts receive gradients and optimizer states. In Part B these adapters are the only thing your notebook actually trains."
+ },
+ {
+  "id": "qlora-ifig-04",
+  "paper": "qlora",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qlora-ifig-04",
+  "text": "QLoRA is the first of eleven papers in the atlas, and it is a tool rather than a model. It handles text only: the paper fine-tunes language models that read and write text. The next tab, TinyLLaVA Factory, shows how an image encoder joins a small language model, and later tabs add voice. For your assignment you will apply the QLoRA recipe to one of those multimodal models, or to a pipeline."
+ },
+ {
+  "id": "qlora-gloss-01",
+  "paper": "qlora",
+  "kind": "gloss",
+  "label": "",
+  "section": "Before you read",
+  "anchor": "#g-qlora-gloss-01",
+  "text": "These fourteen terms are the vocabulary the paper takes for granted. The core ones are LoRA and its rank, quantization and the NF4 data type, double quantization and paged optimizers. BF16 is the sixteen bit format used for computing, though on a Colab T4 you will use FP16. MMLU, the Vicuna benchmark, Elo ratings and Guanaco appear in the results. Come back here whenever a term in the tab stops you."
+ },
+ {
   "id": "tinyllava-factory-paper-01",
   "paper": "tinyllava-factory",
   "kind": "paper",
@@ -574,6 +619,51 @@
   "section": "For your assignment",
   "anchor": "#g-tinyllava-factory-callout-01",
   "text": "Turn this box into your plan. The model reads text and one image, so add a speech-to-text model for voice and feed its transcript through the chat template. Start from the smallest variant, check its real size before training, and use fp16 on a T4. Freeze the vision tower and put LoRA on the language model. Then measure fairness across speaker groups, separating speech recognition errors from answer errors, and normalise transcripts the same way in training and scoring."
+ },
+ {
+  "id": "tinyllava-factory-ifig-01",
+  "paper": "tinyllava-factory",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-tinyllava-factory-ifig-01",
+  "text": "An image enters a language model as a row of extra tokens. The teal path cuts the photo into patches, a frozen vision tower turns each patch into features, and the rust connector, a small trained network, resizes them to match word embeddings. Those visual tokens sit in front of the indigo text tokens, and one small language model reads it all. This is the picture you need for Part A."
+ },
+ {
+  "id": "tinyllava-factory-ifig-02",
+  "paper": "tinyllava-factory",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-tinyllava-factory-ifig-02",
+  "text": "Every part of the model gets one of three treatments. Frozen means it only runs forward. Full tuning updates every weight and costs a lot of memory. LoRA keeps the weight frozen and trains two small matrices, A and B, and QLoRA also stores the frozen weight in four bits. The paper fully trains the connector and language model on big GPUs; on a free T4 you will use LoRA or QLoRA."
+ },
+ {
+  "id": "tinyllava-factory-ifig-03",
+  "paper": "tinyllava-factory",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-tinyllava-factory-ifig-03",
+  "text": "The paper's main idea is software design. A config file names each part, and a factory looks that name up in a registry and builds it. Picking SigLIP instead of CLIP, or a different language model, is a one-line change, and you can register your own module. The config lines drawn here are a sketch, so check the repository for the real syntax before you write your training script."
+ },
+ {
+  "id": "tinyllava-factory-ifig-04",
+  "paper": "tinyllava-factory",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-tinyllava-factory-ifig-04",
+  "text": "TinyLLaVA Factory is the second stop in the atlas. QLoRA gave you the training method for text; this paper adds the first new input, one image, through a vision tower and a connector. SmolVLM, next, makes the same design smaller. The chips show the gap: voice is missing until Voxtral, so with this model you put a speech-to-text model in front for your task."
+ },
+ {
+  "id": "tinyllava-factory-gloss-01",
+  "paper": "tinyllava-factory",
+  "kind": "gloss",
+  "label": "",
+  "section": "Before you read",
+  "anchor": "#g-tinyllava-factory-gloss-01",
+  "text": "Keep this glossary open while you read. The key terms are vision tower, the image encoder; connector, the small network that turns image features into tokens; and chat template, the text format that decides which tokens are the training target. The benchmark names, such as TextVQA, POPE and MME, appear in the results table, and knowing what each one tests will help you choose your own metric."
  },
  {
   "id": "smolvlm-paper-01",
@@ -853,6 +943,51 @@
   "section": "For your assignment",
   "anchor": "#g-smolvlm-callout-01",
   "text": "This box turns the paper into decisions for Assignment 1. SmolVLM covers text and images natively but has no voice input, so plan a speech-to-text model in front of it. The 256 million or 500 million model fits a free T4 comfortably; the 2.2 billion model probably fits with QLoRA, but check memory. Put LoRA on the language backbone, keep the paper's prompt format and answer-only loss, and use transcript normalization and speaker groups for your experiments."
+ },
+ {
+  "id": "smolvlm-ifig-01",
+  "paper": "smolvlm",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-smolvlm-ifig-01",
+  "text": "Every picture has to become tokens before a language model can read it. Follow the path from the top left: a 512 pixel tile is cut into 16 pixel patches, the teal SigLIP encoder turns them into 1,024 feature vectors, the magenta pixel shuffle folds each four by four block into one, and a small projector hands roughly 64 visual tokens to SmolLM2. That 64 is our own arithmetic. Pixel shuffle is the paper's key trick for small models."
+ },
+ {
+  "id": "smolvlm-ifig-02",
+  "paper": "smolvlm",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-smolvlm-ifig-02",
+  "text": "The context window is a fixed budget, drawn here to scale against 8,192 tokens, the limit of the two small SmolVLM models. Five uncompressed tiles already take 5,120 tokens, and fifty uncompressed video frames overflow many times over. After pixel shuffle the same image needs only about 320, and fifty frames fit comfortably. The numbers are illustrative arithmetic, but they explain why the paper fights for every token per image."
+ },
+ {
+  "id": "smolvlm-ifig-03",
+  "paper": "smolvlm",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-smolvlm-ifig-03",
+  "text": "Here is SmolVLM seen through the eyes of Assignment 1. Text and images are handled natively, but there is no voice path, so you add a speech to text model in front and pass its transcript as text. With LoRA, a common setup keeps the vision encoder and the language model weights frozen and trains only the small rust adapters inside SmolLM2. That setup is a practical choice, not a rule from the paper."
+ },
+ {
+  "id": "smolvlm-ifig-04",
+  "paper": "smolvlm",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-smolvlm-ifig-04",
+  "text": "SmolVLM is the third stop in the atlas. QLoRA gave you the fine-tuning tool, and TinyLLaVA Factory the standard recipe of vision encoder, projector and language model. SmolVLM keeps that recipe but redesigns every choice for tiny models, spends far fewer tokens per image, and adds video. The chips on the right show the gap: text and image, but no voice. Voxtral, next, brings the voice path."
+ },
+ {
+  "id": "smolvlm-gloss-01",
+  "paper": "smolvlm",
+  "kind": "gloss",
+  "label": "",
+  "section": "Before you read",
+  "anchor": "#g-smolvlm-gloss-01",
+  "text": "These are the terms the paper uses without explaining. The most important are pixel shuffle, which cuts visual tokens by the square of its ratio, the context window, which is how many tokens the model can read at once, and SigLIP and SmolLM2, the vision encoder and language model inside SmolVLM. The benchmark names at the end, such as OCRBench, MMMU and Video-MME, appear in the results table."
  },
  {
   "id": "voxtral-paper-01",
@@ -1260,6 +1395,51 @@
   "text": "Use this box as the plan for your project. Voxtral handles your voice and text inputs natively, so the only extra piece is a small vision model that turns the image into text. Start from Voxtral Mini in four bit, put LoRA on the decoder projections, keep Whisper frozen, and check memory with 30 second padded clips on a T4. Build the dataset the way the paper did, with some real human recordings, and use Arabic against English as your fairness split."
  },
  {
+  "id": "voxtral-ifig-01",
+  "paper": "voxtral",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-voxtral-ifig-01",
+  "text": "Sound reaches the language model in four steps. The waveform becomes a log-Mel spectrogram, a picture of sound with a hundred frames per second. The Whisper encoder turns it into fifty vectors per second, and Voxtral's adapter merges every four into one audio token, so twelve and a half per second. Those gold audio tokens and the indigo text tokens form one sequence, and the decoder reads them like words."
+ },
+ {
+  "id": "voxtral-ifig-02",
+  "paper": "voxtral",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-voxtral-ifig-02",
+  "text": "Word error rate is the paper's main score for transcription, and a natural metric for your base versus fine-tuned comparison. Line up the output with the reference, count substitutions, deletions and insertions, and divide by the number of reference words. Here three mistakes over six words give fifty percent. Notice that writing ten instead of the digits removes one error, which is exactly why your normalization experiment matters."
+ },
+ {
+  "id": "voxtral-ifig-03",
+  "paper": "voxtral",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-voxtral-ifig-03",
+  "text": "This is a sensible fine-tuning plan for Assignment 1, not a recipe printed in the paper. Grey parts stay frozen: the six hundred and forty million parameter Whisper encoder and the decoder, stored in four bits. Rust parts learn: LoRA adapters on the decoder's attention and MLP layers, and optionally the small twenty five million parameter adapter, which the paper itself trains alone in its warm-up stage."
+ },
+ {
+  "id": "voxtral-ifig-04",
+  "paper": "voxtral",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-voxtral-ifig-04",
+  "text": "Voxtral is paper four of eleven in the atlas. SmolVLM before it adds sight, reading images and answering in text. Voxtral adds hearing, taking speech and text in and giving text out, with up to forty minutes of audio. The image chip is grey, so for a text, image and voice task you need a small vision model beside it. Voxtral Realtime, next, turns the same idea into live, streaming transcription."
+ },
+ {
+  "id": "voxtral-gloss-01",
+  "paper": "voxtral",
+  "kind": "gloss",
+  "label": "",
+  "section": "Before you read",
+  "anchor": "#g-voxtral-gloss-01",
+  "text": "These are the words the paper uses without explaining them. Read log-Mel spectrogram, adapter and context window first, because they explain how audio fits into a language model. WER and BLEU are the scores in the results tables, FLEURS and Common Voice are the speech test sets, and TTS, diarization and DPO describe how the training data and preference tuning were built."
+ },
+ {
   "id": "voxtral-realtime-paper-01",
   "paper": "voxtral-realtime",
   "kind": "paper",
@@ -1573,6 +1753,51 @@
   "section": "For your assignment",
   "anchor": "#g-voxtral-realtime-callout-01",
   "text": "Use this box to plan your project. Voxtral Realtime only hears speech and writes text, so for a text, image and voice task treat it as the speech to text stage and send its transcript and the image to a small vision language model that you fine tune with QLoRA. It comes in one 4.4 billion parameter size; check library and memory support before trying to fine tune it on a T4, because its training data also needs word timestamps. Choose a long delay for offline work, and use Arabic versus English for your fairness experiment."
+ },
+ {
+  "id": "voxtral-realtime-ifig-01",
+  "paper": "voxtral-realtime",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-voxtral-realtime-ifig-01",
+  "text": "Streaming means the model writes while you are still talking. The gold row is the speaker, the indigo rows are two kinds of recognizer. An offline model such as Whisper waits for the whole clip, then writes everything. A streaming model writes each word a fixed delay, called tau, after it is spoken, shown here as 480 milliseconds. A short delay feels live but gives the model less evidence, and that trade-off is the whole story of this paper."
+ },
+ {
+  "id": "voxtral-realtime-ifig-02",
+  "paper": "voxtral-realtime",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-voxtral-realtime-ifig-02",
+  "text": "Speech reaches the language model in four steps. The waveform, sixteen thousand samples a second, becomes a log-Mel spectrogram at a hundred frames a second. A causal encoder turns that into fifty vectors a second, each built only from sound already heard, and an adapter stacks four of them into one vector every 80 milliseconds. The decoder then writes exactly one token per step: a wait token, or a word marker followed by the word."
+ },
+ {
+  "id": "voxtral-realtime-ifig-03",
+  "paper": "voxtral-realtime",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-voxtral-realtime-ifig-03",
+  "text": "Word error rate counts how many edits turn the model's transcript into the reference. Here one word is substituted, one deleted and one inserted, out of six reference words, so the rate is three over six, or fifty percent. Lower is better. Every table in the paper uses this metric, and in Part C you will use it too. Remember that capital letters and punctuation count as errors unless you normalize both texts first."
+ },
+ {
+  "id": "voxtral-realtime-ifig-04",
+  "paper": "voxtral-realtime",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-voxtral-realtime-ifig-04",
+  "text": "This is paper five of eleven,. Voxtral, the previous paper, taught a Mistral language model to listen, but only to finished recordings. Voxtral Realtime keeps the same 80 millisecond audio rate and adds live transcription with a delay you choose. It accepts voice only, with no image and no text prompt. LFM2, next, moves to fast small backbones with image and audio variants. For your task, treat it as the speech to text stage of a pipeline."
+ },
+ {
+  "id": "voxtral-realtime-gloss-01",
+  "paper": "voxtral-realtime",
+  "kind": "gloss",
+  "label": "",
+  "section": "Before you read",
+  "anchor": "#g-voxtral-realtime-gloss-01",
+  "text": "These are the words the paper uses without explaining. The most important are delay, which is how far the transcript lags behind the voice, causal attention, which means looking only at the past, and word error rate, the score in every table. FLEURS and Common Voice are the two multilingual test sets, and Whisper is the offline baseline the paper tries to match. Come back here whenever a term in the tab stops you."
  },
  {
   "id": "lfm2-paper-01",
@@ -2259,6 +2484,51 @@
   "text": "First, state in Part A that LFM2-VL handles text and images and LFM2-Audio handles text and speech, so your text plus image plus voice task needs a speech-to-text step before the vision model. Second, start with the 450 million or 1.6 billion vision model under QLoRA on the T4, in fp16. Third, put LoRA on the backbone linear layers and keep the encoders frozen. Finally, plan a language or speaker-group comparison and a normalization ablation."
  },
  {
+  "id": "lfm2-ifig-01",
+  "paper": "lfm2",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-lfm2-ifig-01",
+  "text": "Speed on a phone depends on what each layer must remember. The top row splits generation into prefill, where the whole prompt is read at once, and decode, one new token per step. The indigo attention row stores keys and values for every token and keeps growing. The magenta short convolution row keeps only the last two inputs. So LFM2 makes ten of its sixteen layers convolutions, and its speed tables report prefill and decode tokens per second."
+ },
+ {
+  "id": "lfm2-ifig-02",
+  "paper": "lfm2",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-lfm2-ifig-02",
+  "text": "A small model learns faster when it copies a big teacher's full guess. The grey teacher, an internal LFM1 seven billion model, gives a probability for every one of about sixty five thousand tokens. LFM2 keeps only the thirty two largest, the magenta bars, and trains the rust student to match them while still predicting the true next token. Section three of the paper is about making this Top-K trick stable. You will not need it for LoRA."
+ },
+ {
+  "id": "lfm2-ifig-03",
+  "paper": "lfm2",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-lfm2-ifig-03",
+  "text": "LFM2-Audio listens with continuous vectors and speaks with discrete codes. Top row: sixteen kilohertz sound becomes a log-mel spectrogram, a FastConformer encoder turns it into one vector every eighty milliseconds, and those enter the indigo backbone like words. Bottom row: a small RQ-Transformer predicts eight Mimi codec codes per frame, and a detokenizer turns them into twenty four kilohertz speech. For Assignment 1, the listening half is the part you would use for spoken questions."
+ },
+ {
+  "id": "lfm2-ifig-04",
+  "paper": "lfm2",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-lfm2-ifig-04",
+  "text": "LFM2 is paper six of eleven, between Voxtral Realtime, which transcribes live speech, and MiniMind-O, a tiny model that hears, sees and speaks. The chips show what each handles. LFM2 covers text, image and voice, but through two separate models: LFM2-VL for images and LFM2-Audio for speech. For a task that needs a photo and a spoken question together, plan a pipeline, for example LFM2-Audio for speech to text followed by LFM2-VL."
+ },
+ {
+  "id": "lfm2-gloss-01",
+  "paper": "lfm2",
+  "kind": "gloss",
+  "label": "",
+  "section": "Before you read",
+  "anchor": "#g-lfm2-gloss-01",
+  "text": "These fourteen terms are the vocabulary the report assumes. The first group is about speed on a device: prefill, decode, time to first token and the KV cache. The next covers the architecture: gated short convolution, grouped-query attention and mixture of experts. Then the inputs: SigLIP2 and PixelUnshuffle for images, log-mel, FastConformer and Mimi codes for audio. Finally the scores: word error rate, VoiceBench, MMLU, IFEval and GSM8K. Come back here whenever a name in the tables is unfamiliar."
+ },
+ {
   "id": "minimind-o-paper-01",
   "paper": "minimind-o",
   "kind": "paper",
@@ -2637,6 +2907,51 @@
   "text": "Use this box as your plan. MiniMind-O already accepts text, voice and images, so you can skip the extra speech model and use its audio plus image format for spoken questions about pictures. The dense model should fit a free T4; add LoRA to the Thinker's attention and feed-forward layers, train the projectors, and keep the encoders frozen. Check fp16 and the missing LoRA mode in the repo first, then compare Chinese and English speakers and normalize numbers before scoring."
  },
  {
+  "id": "minimind-o-ifig-01",
+  "paper": "minimind-o",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-minimind-o-ifig-01",
+  "text": "Speech travels two different roads in MiniMind-O. On the way in, the sixteen kilohertz waveform becomes a log-mel spectrogram, the frozen SenseVoice encoder turns it into feature frames, and a small trainable projector drops each frame into an audio pad slot of the language model. On the way out, the Talker predicts Mimi codes, eight for every eighty millisecond frame, and the frozen Mimi decoder rebuilds twenty four kilohertz audio. On the input side, only the rust projector learns."
+ },
+ {
+  "id": "minimind-o-ifig-02",
+  "paper": "minimind-o",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-minimind-o-ifig-02",
+  "text": "An image enters the model as sixty four extra tokens. SigLIP2 cuts a two hundred fifty six pixel square into an eight by eight grid of patches and outputs one vector per patch. The trainable projector translates those vectors into MiniMind's space, where they replace sixty four image pad placeholders between ordinary text tokens, as the strip at the bottom shows. For your assignment, training only this projector is the cheapest way to adapt the vision side."
+ },
+ {
+  "id": "minimind-o-ifig-03",
+  "paper": "minimind-o",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-minimind-o-ifig-03",
+  "text": "MiniMind-O splits thinking from speaking. The eight layer Thinker writes the text answer, while its layer three hidden state, shown in pink, feeds a four block Talker that predicts the audio codes. Each of the eight codebook rows starts one step later than the row above, so the codes form a staircase. Once the first full column exists, the decoder can play sound, which is why speech starts long before the text is finished."
+ },
+ {
+  "id": "minimind-o-ifig-04",
+  "paper": "minimind-o",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-minimind-o-ifig-04",
+  "text": "Here is MiniMind-O's place in the atlas. LFM2, the tab before, gave a fast small backbone with vision and audio in separate variants. MiniMind-O is the first model in our order that hears, sees and speaks in one small, fully open package, trainable on four consumer GPUs in under four hours per cycle. Qwen2.5-Omni, the next tab, uses the same Thinker and Talker design at seven billion parameters and adds video."
+ },
+ {
+  "id": "minimind-o-gloss-01",
+  "paper": "minimind-o",
+  "kind": "gloss",
+  "label": "",
+  "section": "Before you read",
+  "anchor": "#g-minimind-o-gloss-01",
+  "text": "These fourteen terms are the vocabulary of this paper. Three matter most. The Thinker is the language model that writes text, and the Talker turns its hidden states into speech. Mimi codes are the discrete audio tokens the Talker predicts, eight per frame. CER, the character error rate, measures how well the spoken answer matches the text answer after transcription, and you can reuse it as a metric in Part C."
+ },
+ {
   "id": "qwen25-omni-paper-01",
   "paper": "qwen25-omni",
   "kind": "paper",
@@ -2914,6 +3229,51 @@
   "section": "For your assignment",
   "anchor": "#g-qwen25-omni-callout-01",
   "text": "Use this box as a checklist before you start the notebook. Since voice is native, you can skip an extra speech recognizer, but running Whisper as a baseline makes a good comparison. Check memory first: load the smallest checkpoint in four bit, turn off speech output, keep clips short, and put LoRA only on the Thinker's attention and MLP layers. Then build ChatML samples like the paper's example and plan the typed versus spoken and per-language tests."
+ },
+ {
+  "id": "qwen25-omni-ifig-01",
+  "paper": "qwen25-omni",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qwen25-omni-ifig-01",
+  "text": "Before a language model can reason about a photo or a voice note, both must become tokens. The teal lane cuts an image into fourteen pixel patches, runs them through a vision transformer and merges each two by two group into one token. The gold lane turns a recording into a log-mel spectrogram, and a Whisper based encoder emits about twenty five tokens per second. Longer clips and bigger images cost more GPU memory."
+ },
+ {
+  "id": "qwen25-omni-ifig-02",
+  "paper": "qwen25-omni",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qwen25-omni-ifig-02",
+  "text": "Speaking works like writing, only with a different vocabulary. The Talker predicts speech codec tokens from the Thinker's hidden states; a flow matching DiT turns those codes into a mel spectrogram, and BigVGAN turns that into sound. The timeline below shows why streaming matters: making audio in chunks lets the first sound play early. For the assignment you can skip the Talker entirely and fine-tune only for text answers."
+ },
+ {
+  "id": "qwen25-omni-ifig-03",
+  "paper": "qwen25-omni",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qwen25-omni-ifig-03",
+  "text": "Every token needs a position, and plain counting treats a video as frames first, then sound, so a frame and its own audio end up far apart. TMRoPE replaces the count with a clock: one time step equals forty milliseconds, so a frame at one second and the audio at one second both get time ID twenty five. Image patches also get height and width IDs. This is the paper's main new idea for video with sound."
+ },
+ {
+  "id": "qwen25-omni-ifig-04",
+  "paper": "qwen25-omni",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qwen25-omni-ifig-04",
+  "text": "This is paper eight of eleven. MiniMind-O, just before, is a tiny omni model you can read line by line; Qwen2.5-Omni is the full scale version at seven billion parameters, with native text, image, video and voice input and streaming speech output. Qwen3-Omni, the reference paper after it, keeps the same Thinker and Talker split. Because all three assignment inputs are native, you need no extra speech to text model."
+ },
+ {
+  "id": "qwen25-omni-gloss-01",
+  "paper": "qwen25-omni",
+  "kind": "gloss",
+  "label": "",
+  "section": "Before you read",
+  "anchor": "#g-qwen25-omni-gloss-01",
+  "text": "These fourteen terms are the vocabulary the paper takes for granted. The most important are the Thinker and Talker, the two halves of the model; TMRoPE, its time aligned position scheme; and speech codec tokens, which let a model speak one token at a time. Keep WER in mind too: you will likely report it for voice experiments, and you should normalise transcripts before computing it."
  },
  {
   "id": "qwen3-omni-paper-01",
@@ -3330,6 +3690,51 @@
   "text": "Use this paper as a map, not as your model. It handles all three assignment inputs natively, but every released variant is thirty billion parameters, too large for QLoRA on a free sixteen gigabyte T four, so pick a smaller model such as Qwen two point five Omni. Borrow the ideas instead: LoRA on attention with frozen encoders, a spoken-question-about-an-image task, and a fairness test on Arabic versus English, where this paper reports no per-language numbers."
  },
  {
+  "id": "qwen3-omni-ifig-01",
+  "paper": "qwen3-omni",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qwen3-omni-ifig-01",
+  "text": "Before a model can reason about a question, a photo and a voice clip, all three must become tokens. Text goes through a sub-word tokenizer, the image is cut into patches for a vision encoder, and audio becomes a mel spectrogram that the AuT encoder squeezes into one token every eighty milliseconds. TM-RoPE puts every token on one shared time axis, so the Thinker reads a single sequence. This is exactly what Part A asks you to explain."
+ },
+ {
+  "id": "qwen3-omni-ifig-02",
+  "paper": "qwen3-omni",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qwen3-omni-ifig-02",
+  "text": "Thirty B A three B is the most important label on this model. A router inside each mixture-of-experts layer sends every token to only a few experts, so about three billion parameters do the work per token. But all thirty billion must be loaded, which is about fifteen gigabytes at four bits before anything else. That is why you read this paper for ideas and fine-tune a smaller model on the free T4."
+ },
+ {
+  "id": "qwen3-omni-ifig-03",
+  "paper": "qwen3-omni",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qwen3-omni-ifig-03",
+  "text": "To speak, the model does not produce a waveform directly. It predicts codec codes: for every eighty milliseconds of speech, the Talker picks code zero, the small MTP module fills in codes one to fifteen, and Code2Wav turns them into sound at once. Because no block of frames has to be collected first, the first sound can arrive after about two hundred thirty four milliseconds. The timeline is a sketch, not a measurement."
+ },
+ {
+  "id": "qwen3-omni-ifig-04",
+  "paper": "qwen3-omni",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-qwen3-omni-ifig-04",
+  "text": "Qwen3-Omni is the ninth of eleven papers and a reference, so it is background reading, not an assigned article. It inherits the Thinker and Talker split from Qwen2.5-Omni in the previous tab, and adds mixture-of-experts for both halves, its own AuT audio encoder, time-aligned positions and codec-based streaming speech. It takes text, image and voice natively, plus video. MiniCPM-o 4.5 comes next."
+ },
+ {
+  "id": "qwen3-omni-gloss-01",
+  "paper": "qwen3-omni",
+  "kind": "gloss",
+  "label": "",
+  "section": "Before you read",
+  "anchor": "#g-qwen3-omni-gloss-01",
+  "text": "Keep this glossary open while you read the tab. The terms you will meet most often are Thinker and Talker, mixture of experts, AuT, TM-RoPE and codebook. For your experiments, word error rate matters most: it counts wrong words in a transcript, and its value changes with how you normalize text, which is the point of your Part C normalization experiment. The benchmark names tell you which modality each table tests."
+ },
+ {
   "id": "minicpm-o-paper-01",
   "paper": "minicpm-o",
   "kind": "paper",
@@ -3625,6 +4030,51 @@
   "section": "For your assignment",
   "anchor": "#g-minicpm-o-callout-01",
   "text": "Use this box to plan Parts B and C. All three inputs are native, so you can skip a speech-to-text pipeline. The main risk is memory: load the model in four bits, freeze the encoders, put LoRA on the backbone's attention and MLP layers, and test on a T4 early. A spoken question about a document photo plays to its strengths, and an English versus Arabic comparison gives a clear fairness experiment."
+ },
+ {
+  "id": "minicpm-o-ifig-01",
+  "paper": "minicpm-o",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-minicpm-o-ifig-01",
+  "text": "Every input has to become a row of vectors before the language model can read it. An image slice passes through the SigLIP vision transformer, which gives 1024 vectors, and a resampler squeezes them to 64. Sound is drawn as a log-mel spectrogram, the Whisper encoder makes 50 frames a second, and a small MLP merges every five into one, giving ten tokens a second. This is exactly what Part A asks you to explain."
+ },
+ {
+  "id": "minicpm-o-ifig-02",
+  "paper": "minicpm-o",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-minicpm-o-ifig-02",
+  "text": "The top timeline is the usual turn-based model: while it answers, new input is ignored. The bottom timeline is full-duplex, the paper's main idea. Time is cut into one-second chunks, and each chunk holds three groups of visual tokens, two groups of audio tokens, and then the model's output. When there is nothing to say, the output is a single listen token, so the model decides by itself when to talk."
+ },
+ {
+  "id": "minicpm-o-ifig-03",
+  "paper": "minicpm-o",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-minicpm-o-ifig-03",
+  "text": "Speech can be written as tokens too, about twenty five per second. Asking the big language model to write all of them would slow it and hurt its language skill, so MiniCPM-o keeps it on text, three to four steps a second. A small speech decoder takes each text token plus the model's hidden state and writes the S3 speech tokens, and a flow-matching decoder turns them into sound in a reference voice."
+ },
+ {
+  "id": "minicpm-o-ifig-04",
+  "paper": "minicpm-o",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-minicpm-o-ifig-04",
+  "text": "MiniCPM-o 4.5 comes after Qwen3-Omni, the reference paper, and before Gemma 4. Qwen3-Omni uses a thirty billion parameter mixture of experts, while this is a single nine billion parameter dense model that adds full-duplex interaction. Gemma 4 answers only in text. The coloured chips show that text, images and voice are all native inputs, and the rust bar is the part you would fine-tune with LoRA in Part B."
+ },
+ {
+  "id": "minicpm-o-gloss-01",
+  "paper": "minicpm-o",
+  "kind": "gloss",
+  "label": "",
+  "section": "Before you read",
+  "anchor": "#g-minicpm-o-gloss-01",
+  "text": "Keep this list open while you read. The most important terms are full-duplex, meaning the model listens while it talks, Omni-Flow with its listen token, and the chain from Whisper and SigLIP into the Qwen3 eight B backbone. For your experiments, note word error rate, which you may use as a metric, and the memory figures: for inference, sixteen bit weights need nineteen gigabytes, while four bit weights fit in eleven."
  },
  {
   "id": "gemma4-paper-01",
@@ -3931,5 +4381,50 @@
   "section": "For your assignment",
   "anchor": "#g-gemma4-callout-01",
   "text": "Use E2B or E4B so voice, image and text are all native, and add an ASR model only if you pick 26B or 31B. Load in four bits, put LoRA on the decoder's attention and MLP layers, keep the encoders frozen, and format data with the chat template. A spoken question about a document image matches what the paper tests, and Arabic versus English speech gives a clear fairness split."
+ },
+ {
+  "id": "gemma4-ifig-01",
+  "paper": "gemma4",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-gemma4-ifig-01",
+  "text": "An image enters Gemma 4 as a few soft tokens, not as pixels. The picture is resized to fit a token budget, cut into sixteen pixel patches, encoded by a frozen Vision Transformer, and each three by three group is pooled into one token. You pick the budget, from 70 to 1120 tokens; fewer tokens save memory but hurt document images. The magenta shortcut is the 12B model, which replaces the whole encoder with one linear layer."
+ },
+ {
+  "id": "gemma4-ifig-02",
+  "paper": "gemma4",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-gemma4-ifig-02",
+  "text": "Speech reaches the language model as a stream of vectors, never as text. Sound at sixteen kilohertz is cut into forty millisecond chunks of 640 samples. In E2B and E4B each chunk becomes a Mel filterbank and passes a frozen Conformer encoder of 305 million parameters; the 12B model projects the raw samples with one linear layer. Either way the model answers in text, so for your pipeline, resample audio to sixteen kilohertz."
+ },
+ {
+  "id": "gemma4-ifig-03",
+  "paper": "gemma4",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-gemma4-ifig-03",
+  "text": "This chart answers the first practical question: which model fits your free GPU? Outlined bars are weights in bf16, solid bars the paper's quantized files, and the magenta line is the sixteen gigabyte T4. E2B and E4B are called effective sizes because per-layer embeddings sit on top, and the 26B Mixture-of-Experts uses only about four billion parameters per token but must still be fully loaded. Encoders, activations and LoRA add more, so start with E2B or E4B."
+ },
+ {
+  "id": "gemma4-ifig-04",
+  "paper": "gemma4",
+  "kind": "ifig",
+  "label": "Primer",
+  "section": "Before you read",
+  "anchor": "#g-gemma4-ifig-04",
+  "text": "Gemma 4 is the eleventh and final paper of the atlas. Before it, MiniCPM-o 4.5 showed one nine billion parameter model that sees, hears and talks back. Gemma 4 instead offers five sizes with small frozen encoders, and a 12B model with no encoders at all. It reads text, images and, on three sizes, speech, but it only writes text. After this tab, the next step is your own fine-tuned model."
+ },
+ {
+  "id": "gemma4-gloss-01",
+  "paper": "gemma4",
+  "kind": "gloss",
+  "label": "",
+  "section": "Before you read",
+  "anchor": "#g-gemma4-gloss-01",
+  "text": "These fourteen terms are the vocabulary the paper assumes. Model names carry meaning: E2B means about two billion effective parameters, and A4B means about four billion active parameters in a Mixture-of-Experts. Soft tokens, Mel filterbanks and Conformers describe how images and sound get in. WER, CER, BLEU, FLEURS and CoVoST are how the paper scores speech, and you will reuse WER in Part C. Come back here whenever a table uses a name you do not know."
  }
 ]

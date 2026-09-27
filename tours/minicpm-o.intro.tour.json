@@ -1,0 +1,33 @@
+{
+ "paper": "minicpm-o",
+ "kind": "intro",
+ "button": "Play intro",
+ "title": "Before you read MiniCPM-o 4.5",
+ "stops": [
+  {
+   "target": "minicpm-o-paper-01",
+   "title": "A model that talks back",
+   "text": "Welcome to MiniCPM-o 4.5. This is a nine billion parameter open model that sees images and video, hears speech, and speaks back, all at the same time. Before the full tour, let's make sure you have three ideas in hand: how pictures and sound become tokens, what full-duplex means, and how a model produces speech."
+  },
+  {
+   "target": "minicpm-o-ifig-01",
+   "title": "Everything becomes tokens",
+   "text": "First, tokens. A language model only reads a row of vectors. An image slice goes through a vision transformer called SigLIP and a resampler, ending as sixty four tokens. Sound is first drawn as a log-mel spectrogram, then the Whisper encoder and a small network turn it into ten tokens per second. Explaining these paths is exactly your job in Part A."
+  },
+  {
+   "target": "minicpm-o-ifig-02",
+   "title": "Listening while talking",
+   "text": "Second, full-duplex. Most chat models take turns, like a walkie-talkie, and stop perceiving while they answer. This paper cuts time into one-second chunks. Each chunk holds the newest image and audio tokens, then the model's output. If it has nothing to say, it writes a single listen token, so the model decides by itself when to speak."
+  },
+  {
+   "target": "minicpm-o-gloss-01",
+   "title": "Words to keep handy",
+   "text": "Third, speech out, which you will meet in the glossary and in the speech primer. The model writes text, and a small decoder turns it into speech tokens, about twenty five per second, which a flow-matching decoder plays in a chosen voice. Also note word error rate, a metric you may use yourself, and INT4, four bit weights, which bring the model down to about eleven gigabytes for inference."
+  },
+  {
+   "target": "minicpm-o-ifig-04",
+   "title": "Where this paper sits",
+   "text": "Finally, the map. MiniCPM-o follows Qwen3-Omni, a large mixture of experts model, and comes just before Gemma 4, which answers only in text. What it adds is full-duplex interaction in a single dense model. Text, images and voice are all native, so no extra speech to text model is needed. For Part B, you would put LoRA on the Qwen3 layers and keep the encoders frozen. When you're ready, press Play guided tour."
+  }
+ ]
+}

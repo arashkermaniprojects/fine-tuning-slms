@@ -1,0 +1,33 @@
+{
+ "paper": "gemma4",
+ "kind": "intro",
+ "button": "Play intro",
+ "title": "Before you read Gemma 4",
+ "stops": [
+  {
+   "target": "gemma4-paper-01",
+   "title": "The last paper",
+   "text": "Welcome to the last paper in our atlas, and maybe the most useful one for your assignment. Gemma 4 is a family of open models from Google DeepMind. The two smallest, E2B and E4B, read text, images and speech natively and fit on a free T4. Before you read, let's make sure you know how pictures and sound get into the model, and what the model names mean."
+  },
+  {
+   "target": "gemma4-ifig-01",
+   "title": "Pictures and sound as tokens",
+   "text": "Start with the image path. The picture is cut into small patches, a frozen Vision Transformer encodes them, and groups of nine are pooled into one soft token. You choose the budget, up to 1120 tokens. Speech works in a similar way: the sound is cut into forty millisecond chunks, turned into Mel features, and encoded into vectors. The paper's big idea is the 12B model, which skips both encoders and uses a single linear layer instead."
+  },
+  {
+   "target": "gemma4-ifig-03",
+   "title": "Names and memory",
+   "text": "Now the model names. E2B means about two billion effective parameters. The model stores more than that, but many of them are embedding tables that are only looked up. The 26B A4B model is a Mixture of Experts: it uses about four billion parameters per token, but all twenty six billion must fit in memory. Compare the bars with the sixteen gigabyte line and you will see why E2B or E4B, loaded in four bits, is your realistic choice."
+  },
+  {
+   "target": "gemma4-gloss-01",
+   "title": "Words to keep handy",
+   "text": "The glossary collects the rest. Keep an eye on WER, the word error rate, which is how the paper scores transcription and how you might score your own model in Part C. FLEURS and CoVoST are the speech benchmarks, and InfographicVQA tests questions about text heavy images. You will also meet the KV cache and thinking mode, which explain the paper's speed and reasoning tricks."
+  },
+  {
+   "target": "gemma4-ifig-04",
+   "title": "Where this paper sits",
+   "text": "Finally, the map. Just before this, MiniCPM-o showed one model that sees, hears and talks back. Gemma 4 takes a different route: five sizes, small frozen encoders, and a 12B model with no encoders at all. It reads text, images and speech, but always answers in text. After this tab, the next step is your own fine-tuned model. When you're ready, press Play guided tour."
+  }
+ ]
+}
