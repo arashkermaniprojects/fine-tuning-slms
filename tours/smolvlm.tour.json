@@ -1,0 +1,22 @@
+{
+ "paper": "smolvlm",
+ "title": "SmolVLM in five minutes",
+ "stops": [
+  {"target": "smolvlm-paper-01", "title": "The question",
+   "text": "After TinyLLaVA Factory showed you the standard recipe for building a small vision-language model, SmolVLM pushes that recipe to the extreme. The question is how small such a model can get and still read documents, charts and videos. The Hugging Face team's answer is a family of three models, the smallest with only 256 million parameters, running in under one gigabyte of GPU memory. For your assignment this matters directly, because a model this small is easy to fine-tune on a free Colab GPU."},
+  {"target": "smolvlm-fig-01", "title": "Every input becomes tokens",
+   "text": "Here is the whole model on one page. Text goes through the tokenizer. Images are cut into tiles plus one small global view, video is cut into frames, and both pass through a SigLIP image encoder, a pixel shuffle and a small projector. Everything ends up as tokens for one small language model called SmolLM2, which writes a text answer. Now look at the top row. There is no audio path at all, so voice has to be turned into text before SmolVLM ever sees it."},
+  {"target": "smolvlm-fig-02", "title": "Why small is hard",
+   "text": "So what goes wrong when you simply shrink a big model? Image tokens. A single 512 pixel tile already produces 1,024 tokens, half of the original context of the language model. Split a document into several tiles and you overflow the window several times. Big models can afford this. A tiny model cannot, both because of memory and because very long sequences are hard for a small model to handle. Every design choice in the paper is a way to spend fewer tokens per picture."},
+  {"target": "smolvlm-fig-09", "title": "Fix one: pixel shuffle",
+   "text": "The main tool is pixel shuffle. It takes each two by two block of image features and stacks them into one position with four times the channels. Nothing is thrown away, but the number of positions, which is the number of tokens, drops sharply. Applied with a ratio of four, the token count falls sixteen times, to about 64 tokens per tile. Larger models usually stop at a ratio of two to protect small text, but the paper found that small models do better with the aggressive setting."},
+  {"target": "smolvlm-fig-04", "title": "Fix two: how the input is written",
+   "text": "The second set of fixes is about how the input is written down. Each tile gets a learned position token instead of a text tag like row one column two, which stopped a strange training stall the authors call the OCR loss plague. Plain text markers such as here is an image wrap the visual tokens, and a system prompt states the task. Finally, notice the rust part. The loss is computed only on the answer, not on the question. You should copy this when you fine-tune."},
+  {"target": "smolvlm-fig-12", "title": "Fix three: the data",
+   "text": "The third lesson is about data, and it is a warning. Recipes that help large models can hurt small ones. Adding instruction text built for big language models lowered the scores by 3.7 percent on video and 6.5 percent on images. A large share of chain of thought reasoning data also hurt. Longer training videos, up to about three and a half minutes, helped. For your own dataset, the message is to keep it focused on your task, with only a little extra text."},
+  {"target": "smolvlm-fig-16", "title": "Does it work?",
+   "text": "It works, and the key measure is memory. SmolVLM needs 0.8, 1.2 and 4.9 gigabytes for its three sizes, while competitors with similar parameter counts need 10 to 14 gigabytes, because they spend many more tokens per image. The largest SmolVLM reaches an average score of about 60 percent across fourteen benchmarks. The caveat is that the smallest models trail on tasks that need heavy language reasoning, and the paper only evaluates English benchmarks."},
+  {"target": "smolvlm-callout-01", "title": "What you take from it",
+   "text": "So what do you take into Assignment 1? SmolVLM covers text and images, but not voice, so plan a pipeline with a small speech-to-text model feeding its transcript into the prompt. The 256 or 500 million model fits a free T4 easily. Put LoRA on the language model, keep the paper's prompt format, and train only on answers. Then test how transcript normalization and speaker groups change your results. Next, Voxtral fills exactly the gap we found here, by giving a language model real ears."}
+ ]
+}

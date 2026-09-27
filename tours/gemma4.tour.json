@@ -1,0 +1,41 @@
+{
+ "paper": "gemma4",
+ "title": "Gemma 4 in five minutes",
+ "stops": [
+  {
+   "target": "gemma4-paper-01",
+   "title": "The question",
+   "text": "We end the atlas with Gemma 4, from Google DeepMind. Its question is practical: can one family of open models read text, images and audio, reason well, and still run on a phone or a free GPU? The family spans a small model called E2B, with 2.3 billion effective parameters, up to a 31 billion dense model and a Mixture-of-Experts. For your assignment, the small end is what counts, so keep asking which size you can actually fine-tune."
+  },
+  {
+   "target": "gemma4-fig-01",
+   "title": "Three roads, one decoder",
+   "text": "Here is the whole model on one page. Text is tokenized. Images are resized, encoded by a frozen Vision Transformer, and pooled into soft tokens. Audio is cut into 40 millisecond chunks and encoded by a frozen Conformer. All three become vectors that one decoder reads, and the answer comes out as text. Notice the crossed-out boxes: no speech output, and no video path in the report. Audio only exists in the smaller models and the 12B."
+  },
+  {
+   "target": "gemma4-fig-02",
+   "title": "Encoders are expensive",
+   "text": "Why change anything? Look at where the smallest model's parameters go. Of about five billion stored parameters, the audio and vision encoders take almost half a billion, and per-layer embedding tables take the largest slice. On a phone, every encoder pass costs memory and time. The previous generation's audio encoder alone had 680 million parameters. So the team had two goals: shrink the encoders, and in one model, remove them."
+  },
+  {
+   "target": "gemma4-fig-05",
+   "title": "Letting the LLM listen",
+   "text": "This is the paper's boldest idea. In E2B and E4B, audio still goes through twelve Conformer layers, now 55 percent smaller than before. In the 12B model the encoder is thrown away. Each raw chunk of 640 audio samples goes through one linear layer straight into the language model, and image patches get the same treatment. The language model itself learns to hear and see. Table 8 shows this still transcribes speech well."
+  },
+  {
+   "target": "gemma4-fig-08",
+   "title": "Counting image tokens",
+   "text": "Images need care, because tokens cost memory. Gemma 4 resizes each picture so that it keeps roughly its shape but fits a token budget. The image is cut into 16 pixel patches, the encoder processes them, and every three by three group is pooled into one soft token. In this example, 72 patches become just 8 tokens. You choose the budget, from 70 up to 1120 tokens, and that choice matters for your GPU."
+  },
+  {
+   "target": "gemma4-fig-10",
+   "title": "Does it work, for everyone?",
+   "text": "On speech, yes, on average. Word error rate falls for most languages, with a much smaller audio encoder. But look at Arabic, highlighted in magenta. The E4B model makes about 16 errors per hundred words in Arabic, against about six and a half in English, and it is worse than the older model there. The chart next to it shows a second caveat: cutting image tokens from 1120 to 280 costs a lot on document questions."
+  },
+  {
+   "target": "gemma4-callout-01",
+   "title": "Your plan, and the atlas",
+   "text": "So here is your plan. Pick E2B or E4B, so text, image and voice are all native, and load it in four bits on a T4. Keep the encoders frozen, put LoRA on the decoder, and use the chat template with the right end token. A spoken question about a document photo fits what the paper tests, and Arabic against English speakers is your fairness split. That closes our atlas: from QLoRA's memory tricks, through vision and speech models, to one model that does it all. Now build yours."
+  }
+ ]
+}

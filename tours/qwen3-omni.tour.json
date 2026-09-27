@@ -1,0 +1,46 @@
+{
+ "paper": "qwen3-omni",
+ "title": "Qwen3-Omni in five minutes",
+ "stops": [
+  {
+   "target": "qwen3-omni-paper-01",
+   "title": "The question",
+   "text": "This one is a reference paper, so treat it as background reading, not as one of your assigned articles. Qwen3-Omni asks a bold question. Can a single model read text, look at images and video, listen to audio, and talk back, without becoming worse at any one of these than a specialist of the same size? For your assignment it is useful as the finished picture of what you are building towards: a model that takes text, image and voice together."
+  },
+  {
+   "target": "qwen3-omni-fig-01",
+   "title": "Four inputs, one reader",
+   "text": "Here is the whole system in one diagram, and it is the diagram your Part A explanation should resemble. Follow each row. Text is split into tokens. Images and video frames go through a vision encoder. Voice is turned into a mel spectrogram and then into audio tokens. All of them land in one sequence, and a mixture-of-experts language model called the Thinker reads it. Notice the bottom row: a second model, the Talker, turns the Thinker's hidden states into speech."
+  },
+  {
+   "target": "qwen3-omni-fig-02",
+   "title": "Why it is hard",
+   "text": "Why is this hard? Because multimodal models usually trade one ability for another. Teach a language model to see and hear, and its text scores often slip, as the left panel sketches. The paper's goal is the right panel: every modality at the level of a same-size single-modality model. Their recipe is to mix text, image, audio and video data from the very start of pretraining, instead of bolting senses on at the end."
+  },
+  {
+   "target": "qwen3-omni-fig-04",
+   "title": "How voice becomes tokens",
+   "text": "Let's look at how voice actually enters the model, because you will feed it voice clips yourself. The waveform is sampled at sixteen kilohertz and cut into mel frames every ten milliseconds. The new audio encoder, called AuT, merges every eight frames into one token, so one token covers eighty milliseconds. That is twelve and a half tokens per second. A ten second spoken question is only about one hundred and twenty-five tokens. Do this arithmetic for your own dataset."
+  },
+  {
+   "target": "qwen3-omni-fig-06",
+   "title": "Speaking in real time",
+   "text": "The output side is where this paper is most original. The Talker speaks one eighty millisecond frame at a time. It predicts a first code, a tiny module called MTP fills in fifteen more codes that describe the sound in detail, and a small convolutional network turns them into audio immediately. There is no waiting for a block of words. That is how the first sound can arrive in about two hundred and thirty-four milliseconds, in theory."
+  },
+  {
+   "target": "qwen3-omni-fig-07",
+   "title": "What gets trained when",
+   "text": "Now look at the training recipe, because it connects directly to your fine-tuning. In the first stage, the language model is frozen, and only the adapters and then the encoders are trained. The authors warn that training encoders against a frozen model in the wrong order makes perception worse. Later stages unfreeze everything. When you add LoRA adapters to a frozen model, you are doing a small version of that first stage."
+  },
+  {
+   "target": "qwen3-omni-fig-12",
+   "title": "Does it work?",
+   "text": "Does it work? This chart is the key evidence. Each bar is the omni model's score minus a text-only or vision-only model trained with the same data and compute. Almost every bar stays within about one point of zero, so nothing was lost. There is one caveat you should remember. In the appendix, turning on step-by-step thinking makes speech recognition clearly worse. For listening tasks, a plain instruct model is the better choice."
+  },
+  {
+   "target": "qwen3-omni-callout-01",
+   "title": "What you take from it",
+   "text": "So what do you take into your assignment? Not the model itself. Every released version has thirty billion parameters, far too many for QLoRA on a free Colab T four. Take the ideas: keep the encoders frozen, put LoRA on the language model's attention, and try a task like spoken questions about an image. For fairness, note that the paper gives no per-language speech results, so an Arabic versus English gap is yours to measure. Next, MiniCPM-o 4.5 measures itself directly against Qwen3-Omni and aims for full-duplex interaction, listening and speaking at the same time."
+  }
+ ]
+}

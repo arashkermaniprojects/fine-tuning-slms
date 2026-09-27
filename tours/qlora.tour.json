@@ -1,0 +1,46 @@
+{
+ "paper": "qlora",
+ "title": "QLoRA in five minutes",
+ "stops": [
+  {
+   "target": "qlora-paper-01",
+   "title": "Welcome to the atlas",
+   "text": "Welcome to the atlas for Assignment 1. Over eleven papers we will see how compact open models read text, look at images and listen to speech, and how you can fine-tune one of them on a free Colab or Kaggle GPU. We start with the tool, not a model. QLoRA answers a practical question: can you fine-tune a large language model on a single GPU without losing quality? Its answer is yes, and it is the method you will use in Part B."
+  },
+  {
+   "target": "qlora-fig-01",
+   "title": "The big picture",
+   "text": "Here is the whole idea in one drawing. The language model is frozen and stored in four bits, shown by the grey boxes with the magenta NF4 label. Next to every weight matrix sits a small rust coloured LoRA adapter, and only those adapters learn. Notice what is greyed out on the left: image, voice and video. The models in this paper read text only, so for your task you will need the multimodal models in the tabs that follow."
+  },
+  {
+   "target": "qlora-fig-02",
+   "title": "Why memory is the enemy",
+   "text": "Why go to all this trouble? Full sixteen bit fine-tuning of a sixty five billion parameter model needs more than 780 gigabytes of GPU memory, because every weight carries gradients and optimizer states. QLoRA does the same job in under 48 gigabytes. Now look at the small marker for the Colab T4: sixteen gigabytes. That gap is your reality, and it is why every trick in this paper matters to you."
+  },
+  {
+   "target": "qlora-fig-05",
+   "title": "Trick one: NF4",
+   "text": "The first trick is a smarter four bit grid. Four bits give you only sixteen values. Trained weights follow a bell curve, crowded near zero, so the authors place the sixteen NF4 levels where the weights actually are, with an exact zero in the middle. Each shaded band holds roughly the same share of weights, so no level is wasted. An evenly spaced integer grid, shown underneath, wastes levels out in the tails."
+  },
+  {
+   "target": "qlora-fig-06",
+   "title": "Trick two: double quantization",
+   "text": "The second trick is almost a joke that works. Weights are quantized in blocks of sixty four, and each block needs its own scale, stored in thirty two bits. That costs half a bit per weight. So the authors quantize the scales too, into eight bit floats. The overhead falls to about 0.127 bits per weight. A third trick, paged optimizers, moves optimizer states to CPU memory during sudden memory spikes."
+  },
+  {
+   "target": "qlora-fig-10",
+   "title": "Where the adapters go",
+   "text": "This figure holds the lesson you should copy most carefully. The usual LoRA recipe puts adapters only on the attention query and value matrices, and it does not match full fine-tuning. Each dot here is a training run. With LoRA on all linear layers, QLoRA reaches the same score as the tuned sixteen bit model, while attention only or feed-forward only fall short. The paper also found that the rank hardly matters."
+  },
+  {
+   "target": "qlora-fig-16",
+   "title": "Does it really cost nothing?",
+   "text": "So does four bit storage hurt accuracy? This chart compares three versions of the same adapters on the MMLU benchmark, for LLaMA models from seven to sixty five billion parameters. The magenta NF4 dots sit on top of the black sixteen bit dots, averaging 53.1 against 53.0, while plain four bit floats trail by about a point. One caveat: the paper never compared against full fine-tuning at the largest sizes, only at three billion and below."
+  },
+  {
+   "target": "qlora-callout-01",
+   "title": "What you take from it",
+   "text": "So what do you take into your assignment? QLoRA is a recipe, not a model, so pair it with a model that sees and hears, or add a speech to text model in a pipeline. Put LoRA on the language model's linear layers, keep the encoders frozen, use float sixteen compute on the T4, and check memory on a real batch. Next, TinyLLaVA Factory shows how a small vision encoder and a projector plug into a language model."
+  }
+ ]
+}

@@ -1,0 +1,51 @@
+{
+ "paper": "lfm2",
+ "title": "LFM2 in five minutes",
+ "stops": [
+  {
+   "target": "lfm2-paper-01",
+   "title": "The question",
+   "text": "Welcome to LFM2, from Liquid AI. So far in this atlas we have looked at fine-tuning, small vision models and speech models. LFM2 asks a practical question: how do you build a language model small enough to run on a phone, and still make it useful? Their answer covers a whole family, including a vision model and an audio model built on the same backbone. As we go, think about which of these models you would pick for your own assignment."
+  },
+  {
+   "target": "lfm2-fig-01",
+   "title": "Three doors into one backbone",
+   "text": "Here is the map. Text, images and speech each take their own path, but every path ends the same way, as a sequence of vectors that enters one backbone. Images go through a SigLIP2 encoder and a small connector. Speech becomes log-mel features, then an audio encoder and an MLP. Now notice two things. Video is not supported, and no single released model takes image and voice together. For a spoken question about a photo, you will need a pipeline."
+  },
+  {
+   "target": "lfm2-fig-02",
+   "title": "Why attention hurts on a phone",
+   "text": "Why build a new backbone at all? On a phone, memory is the bottleneck. An attention layer must keep keys and values for every past token, so at thirty-two thousand tokens, a model with attention in all sixteen layers needs about a gigabyte just for that cache. LFM2 keeps attention in only six layers, which cuts the cache to about three hundred and eighty megabytes. The other ten layers are convolutions that remember only two steps."
+  },
+  {
+   "target": "lfm2-fig-05",
+   "title": "The gated short convolution",
+   "text": "This is the block that replaces most of the attention. One linear layer makes three streams. The first gates the input, a tiny three-tap filter mixes each position with its two neighbours, the third stream gates the result, and a second linear layer projects back. That is all. The authors did not guess this design. They searched many options, including Mamba and linear attention, timed each one on real phones, and this simple block kept winning."
+  },
+  {
+   "target": "lfm2-fig-07",
+   "title": "Turning an image into tokens",
+   "text": "Now the vision model, LFM2-VL. Small images are resized once, and large ones are cut into tiles of five hundred and twelve pixels plus a thumbnail. SigLIP2 turns patches into vectors, and PixelUnshuffle folds every two by two group into one, so the image costs four times fewer tokens. The budget runs from about one hundred and twenty-eight to about two thousand eight hundred tokens. On a free Colab GPU, that number decides your memory use."
+  },
+  {
+   "target": "lfm2-fig-08",
+   "title": "Train the connector first",
+   "text": "This grid is the most useful one for your fine-tuning. Rust means trained, grey means frozen. Both multimodal models start by training only the small connector, with the encoder and the language model frozen, and only later unfreeze everything. Your LoRA setup follows the same spirit: keep the encoders frozen, and train a small number of new parameters on the backbone's linear layers."
+  },
+  {
+   "target": "lfm2-fig-09",
+   "title": "How the audio model speaks",
+   "text": "The audio model hears through continuous features, but speaks through discrete codes. For every eighty milliseconds of speech, the backbone runs once, then a small depth decoder runs eight quick steps to produce eight codebook codes. In chat mode it writes six text tokens, then twelve audio tokens, so it decides the words before it says them. In sequential mode it can do plain speech recognition, which makes it a possible speech-to-text front end for you."
+  },
+  {
+   "target": "lfm2-fig-14",
+   "title": "Does it work?",
+   "text": "Here is the headline result for the text models. Each dot is a model, placed by average benchmark score and by speed on a phone. The magenta LFM2 models form the frontier: no other model is both faster and better. One caveat. The biggest models, like Qwen three four billion, still score higher; they are just much slower. And the multimodal models are compared on accuracy only, not on speed."
+  },
+  {
+   "target": "lfm2-callout-01",
+   "title": "What you take from it",
+   "text": "So what do you take into Assignment 1? LFM2-VL handles text and images, LFM2-Audio handles text and speech, so plan a speech-to-text step before the vision model. Start small: the four hundred and fifty million or 1.6 billion vision model fits a free T4 with QLoRA. Put LoRA on the backbone's linear layers, and compare Arabic and English inputs for fairness. Next, MiniMind-O goes the other way: one tiny model that takes all three inputs at once."
+  }
+ ]
+}

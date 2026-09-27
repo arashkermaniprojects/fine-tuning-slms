@@ -1,0 +1,24 @@
+{
+ "paper": "minicpm-o",
+ "title": "MiniCPM-o 4.5 in five minutes",
+ "stops": [
+  {"target": "minicpm-o-paper-01", "title": "The question",
+   "text": "Let's look at MiniCPM-o 4.5. The question here goes one step beyond the Qwen omni models. Those can already see, hear and speak, but they still take turns: you talk, then the model talks. This paper asks whether a nine billion parameter open model can watch, listen and speak at the same time, and even decide on its own when to say something. For your assignment it is also a clean case, because text, images and voice all go in natively."},
+  {"target": "minicpm-o-fig-01", "title": "Every input becomes tokens",
+   "text": "Start with this picture, because it is your Part A answer. Every input ends up as tokens for one language model, Qwen3 eight B. Images are cut into slices, SigLIP turns each slice into 1024 tokens, and a resampler squeezes them down to 64. Video frames take the same path. Audio goes through a Whisper encoder at 50 tokens per second, and a small MLP merges that down to 10. On the way out, the model's hidden states drive a small speech decoder that talks."},
+  {"target": "minicpm-o-fig-02", "title": "What goes wrong",
+   "text": "Now the problem. A turn-based model stops perceiving while it speaks, so anything new that happens is simply ignored. If you let the language model produce speech tokens itself, it has to decode about 25 steps every second instead of three or four, which is slow and hurts its language skills. And if text runs ahead of the voice, the model ends up describing a scene that has already changed. Each of the next ideas answers one of these."},
+  {"target": "minicpm-o-fig-03", "title": "Omni-Flow",
+   "text": "Here is the key idea, Omni-Flow. Time is cut into one-second chunks. Each chunk is written as the new visual tokens, then the new audio tokens, then whatever the model says in that second. If it has nothing to say, it writes a single listen token. Chain the chunks together and you get one ordinary token sequence, so a normal language model can be trained on it. Deciding when to speak becomes just another next-token prediction."},
+  {"target": "minicpm-o-fig-04", "title": "Training in stages",
+   "text": "Notice how they add speech without breaking what the model already knew. In stage one, everything pretrained is frozen, and only the new pieces learn: the audio projector, the bridge from the language model to speech, and the speech decoder. Only after that is the whole model unfrozen for joint training, fine-tuning and reinforcement learning. That is the same logic you will use with LoRA: keep the big pretrained parts frozen and train small added modules."},
+  {"target": "minicpm-o-fig-09", "title": "Keeping the voice on time",
+   "text": "One more detail makes live speech work. If you write all the text first, or assume every word takes the same time to say, the voice drifts behind the scene. Their fix, called TAIL, gives each second exactly the words that will be spoken in that second, four in one chunk, two in the next. The model learns to write fewer words when its voice is running behind. The cost is a small rise in English word error rate."},
+  {"target": "minicpm-o-fig-05", "title": "Does it work?",
+   "text": "So does it work? This radar puts each benchmark on a spoke, rescaled so the best model sits on the outer ring. The magenta line is MiniCPM-o. On joint audio and video tests and on speech generation it beats Qwen3-Omni, a thirty billion parameter model, and on most vision tests it sits close to Gemini 2.5 Flash. The one caveat: the only full-duplex benchmark reported is vision only, so live speech is shown mostly through demos."},
+  {"target": "minicpm-o-fig-12", "title": "Will it fit your GPU?",
+   "text": "Now the practical question for your notebook. This chart shows inference memory, with the free Colab T4 line at 16 gigabytes. In sixteen-bit precision the model needs 19 gigabytes, so it does not fit. With four-bit weights it needs 11 to 14. Training with QLoRA adds activations and adapter state on top of that, and the paper never tests fine-tuning on a T4. So load it in four bits and test your memory early."},
+  {"target": "minicpm-o-callout-01", "title": "For your assignment",
+   "text": "So what do you take into Assignment 1? You need no speech-to-text pipeline, since all three inputs are native. Put LoRA on the backbone's attention and MLP layers, and keep the encoders frozen. A spoken question about a photo of a document plays to its strengths. For fairness, compare English and Arabic questions, and normalize text before scoring. Next comes Gemma 4, the last paper, a compact model family that also handles text, images and audio."}
+ ]
+}

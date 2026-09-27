@@ -1,0 +1,46 @@
+{
+ "paper": "minimind-o",
+ "title": "MiniMind-O in five minutes",
+ "stops": [
+  {
+   "target": "minimind-o-paper-01",
+   "title": "The question",
+   "text": "Welcome to the omni group, where one model reads, sees, hears and talks back. We start with the smallest one in the atlas. MiniMind-O asks a simple question: can a complete omni model work, and stay fully open, with only about one tenth of a billion active parameters? For you this matters directly. A model this small is one you can actually fine-tune on a free Colab GPU, and it already accepts all three inputs your assignment asks for."
+  },
+  {
+   "target": "minimind-o-fig-01",
+   "title": "Three inputs, two outputs",
+   "text": "Here is the whole model on one page, and it is exactly what Part A asks you to explain. Read each row from left to right. Text goes straight into the language model's own embeddings. Speech goes through a frozen SenseVoice encoder, images through a frozen SigLIP2 encoder, and a tiny two-layer projector maps both into the same space. The language model, called the Thinker, writes text. A separate Talker turns a middle layer into speech. Notice that video is crossed out."
+  },
+  {
+   "target": "minimind-o-fig-03",
+   "title": "Where should the Talker listen?",
+   "text": "The hard part at this size is connecting thinking to speaking. If the Talker reads the very first layer, the model has not yet mixed in context, so it cannot tell how an ambiguous word should be pronounced. If it reads the last layer, that state is already bent toward choosing the next text token, and the author saw speech errors go up. So MiniMind-O takes the middle, layer three of eight. Keep this bridge in mind; the bigger Qwen omni models use the same idea."
+  },
+  {
+   "target": "minimind-o-fig-05",
+   "title": "How speech and images get in",
+   "text": "Now, how do sound and pictures enter a text model? Through placeholders. The prompt reserves one audio slot per speech frame and sixty-four slots per image. After projection, the encoder outputs simply overwrite those slots, so the Thinker sees one ordinary sequence with no new attention layers. This is the sentence you want in your Part A answer. It also means a spoken question about a photo is just one more sequence, which is the format you need for your own task."
+  },
+  {
+   "target": "minimind-o-fig-08",
+   "title": "How it speaks",
+   "text": "The Talker side is where the paper is most original. Its input adds two streams: the layer three bridge, and its own history of audio codes. Speech is represented by eight parallel Mimi codebooks. Rather than eight full embedding tables and eight full output heads, the model uses one shared table and one shared head, plus a small low-rank adapter per codebook. If that sounds like LoRA, it should. A voice to imitate simply replaces one reserved position."
+  },
+  {
+   "target": "minimind-o-fig-14",
+   "title": "How small can the rank be?",
+   "text": "This rank study is worth your attention because it is a LoRA lesson in miniature. As the adapter rank grows from four to seven hundred sixty-eight, the loss keeps falling, but the gain flattens once the adapters reach a few million parameters. The bottom row separates the two sides: raising the head rank helps much more than raising the embedding rank. When you choose your own LoRA rank, try a moderate value first and spend capacity where the output is decided."
+  },
+  {
+   "target": "minimind-o-fig-18",
+   "title": "Does it work?",
+   "text": "Does it work? Mostly, for short answers. On the left, the Talker needs its full width of seven hundred sixty-eight; narrower versions raise the error, up to about three times. On the right, adding a speaker vector improves voice cloning on both familiar and new voices. Now the caveats. English answers of medium length drift, image descriptions often swap the main object, and the scores come from a speech recogniser, not human listeners. It is a working loop, not a frontier model."
+  },
+  {
+   "target": "minimind-o-callout-01",
+   "title": "What you take from it",
+   "text": "So what do you take into your assignment? You need no extra speech model, because voice, image and text are all native. The dense version should fit a free T4. Put LoRA on the Thinker's attention and feed-forward layers, train the small projectors, and keep the encoders frozen. For fairness, compare English with Chinese speakers, since the speech data is mostly Chinese. For normalization, write numbers one way before scoring. Next, Qwen2.5-Omni shows the same Thinker and Talker design at full scale."
+  }
+ ]
+}

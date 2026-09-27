@@ -1,0 +1,24 @@
+{
+ "paper": "voxtral",
+ "title": "Voxtral in five minutes",
+ "stops": [
+  {"target": "voxtral-paper-01", "title": "The question",
+   "text": "So far in this atlas we have fine-tuned models and taught them to see. Now we teach one to listen. Voxtral, from Mistral, asks a simple question. Can you give a text language model good ears without damaging what it already knows? This matters for your assignment, because voice is one of your three inputs. As we go, keep asking yourself which parts of Voxtral you can reuse, and which part you will have to add yourself."},
+  {"target": "voxtral-fig-01", "title": "Two inputs, one output",
+   "text": "Here is the whole model in one picture. Text goes in through ordinary word embeddings. Speech goes through a Whisper encoder and then a small adapter, and becomes audio tokens that the language model reads just like words. The output is always text: an answer, a transcript, a translation or a function call. Now notice the grey boxes. There is no image path, no video path, and no speech output. For Part A, that is your answer in one sentence."},
+  {"target": "voxtral-fig-02", "title": "Why audio is expensive",
+   "text": "Why is listening hard for a language model? Because audio is long. Whisper produces fifty vectors for every second of sound. A thirty minute recording would become ninety thousand tokens, almost three times the model's thirty two thousand token window. Look at the dashed line. Only after compressing the audio four times do thirty minutes, and even forty, fit inside the context. Everything in the design follows from this budget."},
+  {"target": "voxtral-fig-04", "title": "Chunk, encode, compress",
+   "text": "This is how the audio path solves it. The recording becomes one spectrogram, which is cut into thirty second windows because Whisper can only see thirty seconds at a time. The last window is padded. Each window is encoded on its own, the results are glued back together, and the adapter merges every four frames into one token. So every thirty seconds of sound costs three hundred and seventy five tokens. Remember that number when you estimate memory on Colab."},
+  {"target": "voxtral-fig-09", "title": "Teaching the model to listen",
+   "text": "Now the training trick. Long recordings are split into matched pieces of audio and transcript. In the repetition pattern, each audio piece is followed by its own transcript, which teaches transcription. In the continuation pattern, each audio piece is followed by the next piece of text, which teaches the model to carry a conversation across speech and text. Two special tokens, repeat and next, tell the model which job it is doing. Pretraining mixes them half and half."},
+  {"target": "voxtral-fig-10", "title": "Does it work?",
+   "text": "Does it work? For transcription, clearly yes. Lower bars are better here. Voxtral Small has the lowest word error rate on English short-form speech and on Common Voice, ahead of GPT four o mini and Gemini. One caveat. The paper says the Mini Transcribe model beats Gemini everywhere, but on long English recordings Gemini's bar is lower. Always check the claims in the text against the numbers, and do the same in your own report."},
+  {"target": "voxtral-fig-19", "title": "Why four times compression",
+   "text": "Why compress exactly four times? The authors tested one, two, four and eight. Eight times hurt French transcription. But four times, the magenta line, did not just save memory. It ended about one and a half points above the uncompressed model on spoken question answering. Their explanation is that at twelve and a half tokens per second, one audio token carries about as much information as one text token. Compression, done right, can help understanding."},
+  {"target": "voxtral-fig-24", "title": "Who it fails",
+   "text": "Now a fairness lens, which Part C asks you for. Voxtral is not equally good for everyone. On FLEURS, Voxtral Mini's Arabic word error rate is about seven times its English one. On Common Voice, Arabic is above sixty percent for every Voxtral model. The paper even leaves Arabic out of one average because all models do badly. For students in the Gulf, Arabic against English is a natural and important fairness split to measure."},
+  {"target": "voxtral-callout-01", "title": "What you take from it",
+   "text": "So what do you take into your assignment? Voxtral covers voice and text natively, so you only add a small vision model that turns the image into a caption or OCR text. Start from Voxtral Mini in four bit, put LoRA on the decoder, keep Whisper frozen, and check memory with padded thirty second clips on a T four. Next, Voxtral Realtime asks what changes when the model must listen and answer while you are still speaking."}
+ ]
+}
